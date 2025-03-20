@@ -29,7 +29,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return;
     }
     // send image
-    response.status(200).setHeader("Content-Type", "image/png").send((await get_cache(`assets/${type_request}/${id_request}`, undefined, async () => {
+    response.status(200).setHeader("Content-Type", "image/png").send(Buffer.from((await get_cache(`assets/${type_request}/${id_request}`, undefined, async () => {
         // watermark image
         const path_asset       = `${getConfig().serverRuntimeConfig.PROJECT_ROOT}/assets${assets_match.icon}`;
         const path_watermark   = `${getConfig().serverRuntimeConfig.PROJECT_ROOT}/public/images/watermark.png`;
@@ -68,5 +68,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
             input:   buffer_watermark,
             gravity: "center"
         }]).toBuffer();
-    })).result);
+    })).result as any));
 }
