@@ -54,7 +54,7 @@ const About: NextPageLayout = () => {
 export const getStaticProps: GetStaticProps = async (context) => {
 	return {props: {
 		page_name:        "About",
-		page_description: "One-Stop Source for All Things FlagWars",
+		page_description: "Welcome to the FlagWars Wiki, your one-stop list for exclusive weapons, gadgets, and cosmetics!",
 		page_pathname:    "/"
 	}};
 }
