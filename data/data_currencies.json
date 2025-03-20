@@ -1,0 +1,74 @@
+[
+    {
+        "id": "cash",
+        "name": "Cash",
+        "icon": "/images/currencies/cash.png",
+        "color": "#2fe000"
+    },
+    {
+        "id": "robux",
+        "name": "Robux",
+        "icon": "/images/currencies/robux.png",
+        "color": "#ffde67"
+    },
+    {
+        "id": "heart",
+        "name": "Heart Token",
+        "icon": "/images/currencies/heart.png",
+        "color": "#ff9cc4"
+    },
+    {
+        "id": "rose",
+        "name": "Rose",
+        "icon": "/images/currencies/rose.png",
+        "color": "#e81b25"
+    },
+    {
+        "id": "clover",
+        "name": "Clover",
+        "icon": "/images/currencies/clover.png",
+        "color": "#5bff0f"
+    },
+    {
+        "id": "egg",
+        "name": "Egg",
+        "icon": "/images/currencies/egg.png",
+        "color": "#b0e2ff"
+    },
+    {
+        "id": "popsicle",
+        "name": "Popsicle",
+        "icon": "/images/currencies/popsicle.png",
+        "color": "#9ca3af"
+    },
+    {
+        "id": "coin",
+        "name": "Coin",
+        "icon": "/images/currencies/coin.png",
+        "color": "#ffb003"
+    },
+    {
+        "id": "candy",
+        "name": "Candy Corn",
+        "icon": "/images/currencies/candy.png",
+        "color": "#ff5700"
+    },
+    {
+        "id": "gingerbread",
+        "name": "Gingerbread",
+        "icon": "/images/currencies/gingerbread.png",
+        "color": "#aa7b4b"
+    },
+    {
+        "id": "snowflake",
+        "name": "Snowflake",
+        "icon": "/images/currencies/snowflake.png",
+        "color": "#88c9f9"
+    },
+    {
+        "id": "quest",
+        "name": "Quest",
+        "icon": "/images/currencies/quest.png",
+        "color": "#8b5cf6"
+    }
+]

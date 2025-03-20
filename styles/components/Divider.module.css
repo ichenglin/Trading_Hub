@@ -1,0 +1,33 @@
+.section_divider {
+	position: relative;
+}
+
+.section_divider > div {
+    width: 100vw;
+    height: calc(100vw / 16);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.section_divider > div > svg {
+    width: calc(106% + 1.3px);
+    height: 100%;
+    position: relative;
+    display: block;
+    transform: rotateY(180deg);
+
+}
+
+.section_divider > div > svg > path {
+    fill: #DAE9F2;
+}
+
+.section_divider_inverted > div {
+	top: 0px;
+	bottom: unset;
+	transform: rotate(0deg);
+}

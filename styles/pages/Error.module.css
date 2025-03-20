@@ -1,0 +1,50 @@
+.cover {
+    width: 100%;
+    height: calc(100svh - 140px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.window > img {
+    width: 192px;
+    height: 192px;
+}
+
+.window > h5 {
+    font-size: 45px;
+    font-weight: 600;
+}
+
+.window > p {
+    max-width: min(450px, 90vw);
+    font-size: 30px;
+}
+
+.window > a {
+    margin-top: 30px;
+}
+
+@media screen and (max-width: 500px) {
+    .window > img {
+        width: calc(256px * 0.5);
+        height: calc(256px * 0.5);
+    }
+
+    .window > h5 {
+        font-size: calc(60px * 0.5);
+    }
+    
+    .window > p {
+        max-width: min(calc(600px * 0.5), 90vw);
+        font-size: calc(40px * 0.5);
+    }
+}

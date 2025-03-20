@@ -1,0 +1,198 @@
+[
+    {
+		"id": "default_face",
+		"name": "Default Face",
+		"alias": [],
+		"icon": "/faces/default_face.png",
+		"price": [
+			{
+				"currency": "cash",
+				"amount": 0,
+				"source": "Free",
+				"obtainable": true
+			}
+		]
+    },
+    {
+		"id": "drakobloxxer",
+		"name": "Drakobloxxer",
+		"alias": [],
+		"icon": "/faces/drakobloxxer.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 66000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "green_glowing_eyes",
+		"name": "Green Glowing Eyes",
+		"alias": [],
+		"icon": "/faces/green_glowing_eyes.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 45000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "red_glowing_eyes",
+		"name": "Red Glowing Eyes",
+		"alias": [],
+		"icon": "/faces/red_glowing_eyes.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 45000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "yellow_glowing_eyes",
+		"name": "Yellow Glowing Eyes",
+		"alias": [],
+		"icon": "/faces/yellow_glowing_eyes.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 45000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "scarecrow",
+		"name": "Scarecrow",
+		"alias": [],
+		"icon": "/faces/scarecrow.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 15000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "snake_eyes",
+		"name": "Snake Eyes",
+		"alias": [],
+		"icon": "/faces/snake_eyes.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 20000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "purple_trance",
+		"name": "Purple Trance",
+		"alias": [],
+		"icon": "/faces/purple_trance.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 12000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "violet_fang",
+		"name": "Violet Fang",
+		"alias": [],
+		"icon": "/faces/violet_fang.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 38000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "red_fang",
+		"name": "Red Fang",
+		"alias": [],
+		"icon": "/faces/red_fang.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 60000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "eyes_of_emeraldwrath",
+		"name": "Eyes Of Emeraldwrath",
+		"alias": [],
+		"icon": "/faces/eyes_of_emeraldwrath.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 100000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "playful_vampire",
+		"name": "Playful Vampire",
+		"alias": [],
+		"icon": "/faces/playful_vampire.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 95000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "pumpkin_face",
+		"name": "Pumpkin Face",
+		"alias": [],
+		"icon": "/faces/pumpkin_face.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 12000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    },
+    {
+		"id": "poisonous_beast_mode",
+		"name": "Poisonous Beast Mode",
+		"alias": [],
+		"icon": "/faces/poisonous_beast_mode.png",
+		"price": [
+			{
+				"currency": "candy",
+				"amount": 40000,
+				"source": "Season 2",
+				"obtainable": false
+			}
+		]
+    }
+]

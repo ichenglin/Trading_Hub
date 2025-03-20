@@ -1,0 +1,46 @@
+.reference {
+    display: inline-flex;
+    flex-direction: column;
+    color: #0069FF;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.reference::after {
+    content: "";
+    margin-top: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: transparent;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.reference:hover:after {
+    content: "";
+    margin-top: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #0069FF;
+}
+
+.reference > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.reference > div > span {
+    white-space: nowrap;
+}
+
+.reference > div > svg {
+    margin-left: 8px;
+    margin-right: 4px;
+    transition-duration: 0.3s;
+}
+
+.reference:hover > div > svg {
+    margin-left: 12px;
+    margin-right: 0px;
+}

@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body style */
+
+html, body, #__next {
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+	overflow-x: hidden;
+}
+
+main {
+	min-height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* global styles */
+
+span.header_offset {
+    display: block;
+    position: relative;
+    top: -60px;
+	visibility: hidden;
+}
+
+.container_shadow {
+    box-shadow: rgb(212, 212, 213) 0px 1px 3px 0px, rgb(212, 212, 213) 0px 0px 0px 1px;
+}

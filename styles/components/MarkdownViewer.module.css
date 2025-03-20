@@ -1,0 +1,28 @@
+.markdown {
+    margin: 30px;
+}
+
+.markdown a {
+    display: inline-flex;
+    flex-direction: column;
+    color: #28A3F5;
+    text-decoration: none;
+}
+
+.markdown a::after {
+    content: "";
+    margin-top: -6px;
+    width: 0%;
+    height: 2px;
+    background-color: transparent;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.markdown a:hover:after {
+    content: "";
+    margin-top: -6px;
+    width: 100%;
+    height: 2px;
+    background-color: #28A3F5;
+}

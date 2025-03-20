@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Markdown Template",
+        "description": "Template for loading markdown files",
+        "type": "markdown",
+        "pathname": "/mdtest",
+        "source": "/markups/template.md",
+        "sitemap": false
+    }
+]
