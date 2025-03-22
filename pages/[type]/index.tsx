@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import type { NextPageLayout } from "./_app";
-import { AssetCategoryAPI, AssetGroupAPI } from "./api/categories";
+import type { NextPageLayout } from "../_app";
+import { AssetCategoryAPI, AssetGroupAPI } from "../api/categories";
 import { get_sort_price } from "@/utilities/util_sort";
 import { Asset, AssetGroup, CurrencyConverter, get_categories } from "@/utilities/util_asset";
 import styles from "@/styles/pages/Explore.module.css";
@@ -99,7 +99,7 @@ const Explore: NextPageLayout<{page_group: AssetGroup}> = (props) => {
                                 })}
                             </div>
                             <div className={styles.actions}>
-                                <Link href={asset_data.page}>
+                                <Link href={`/${asset_data.type}/${asset_data.id}`}>
                                     <FontAwesomeIcon icon={faAngleRight}/>
                                     <span>View Item</span>
                                 </Link>

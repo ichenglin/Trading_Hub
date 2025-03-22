@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Asset, AssetType, get_assets } from "@/utilities/util_asset";
-import { APIContent, get_cache, get_error } from "@/utilities/util_cache";
+import { Asset, AssetType } from "@/utilities/util_asset";
+import { APIContent, get_error } from "@/utilities/util_cache";
 import { validate_type } from "@/utilities/util_validate";
+import { get_assets_cached } from "@/utilities/util_database";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse<APIContent<Asset[]>>) {
     const item_type  = request.query.type as AssetType;
@@ -19,11 +20,4 @@ export default async function handler(request: NextApiRequest, response: NextApi
     }
     // item exist
     response.status(200).json(await get_assets_cached(item_type));
-}
-
-export async function get_assets_cached(item_type: AssetType) {
-    return await get_cache(`items/${item_type}`, undefined, async () => {
-        if (item_type === AssetType.ALL) return await get_assets();
-        else                             return (await get_assets()).filter(asset_data => (asset_data.type === item_type));
-    });
 }

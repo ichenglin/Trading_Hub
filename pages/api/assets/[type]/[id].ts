@@ -3,9 +3,9 @@ import getConfig from "next/config";
 import sharp from "sharp";
 import { AssetType } from "@/utilities/util_asset";
 import { get_cache, get_error } from "@/utilities/util_cache";
-import { get_assets_cached } from "../../items/[type]";
 import { validate_string, validate_type } from "@/utilities/util_validate";
 import { get_currencies_cached } from "../../currencies";
+import { get_assets_cached } from "@/utilities/util_database";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     // check type & pathname valid

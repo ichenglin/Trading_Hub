@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,13 +14,19 @@ import { Inter, Bungee } from "next/font/google";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBars, faXmark, faRankingStar, faShuffle, faSquareRootVariable, faToolbox } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { cookie_parse, CookieStorage } from "@/utilities/util_cookie";
 
 const font_bungee = Bungee({subsets: ["latin"], weight: "400"});
 const font_inter  = Inter({subsets: ["latin"]});
 
 const PageHeader: NextPageLayout = () => {
 
+	const [cookie, set_cookie] = useState({} as CookieStorage);
 	const router = useRouter();
+
+	useEffect(() => {
+		set_cookie(cookie_parse(document.cookie));
+	}, []);
 
 	const dropdown_toggle = (click_event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
 		const header_element  = document.getElementsByClassName(styles.header)[0];
@@ -61,9 +67,9 @@ const PageHeader: NextPageLayout = () => {
 				<FontAwesomeIcon className={styles.active} icon={faXmark} width="14" height="14"/>
 				<span>Links</span>
 			</a>
-			<Link className={styles.contact} href="/login">
+			<Link className={styles.contact} href={(cookie.SESSION_USER !== undefined) ? `/profile/${cookie.SESSION_USER}` : "/login"}>
 				<FontAwesomeIcon icon={faDiscord} width="14" height="14"/>
-				<span>Login with Discord</span>
+				<span>{cookie.SESSION_NAME ?? "Login with Discord"}</span>
 			</Link>
 		</header>
 	);
