@@ -3,7 +3,7 @@ import * as Crypto from "crypto";
 import Backend from "@/backend";
 import { DiscordUser } from "./util_auth";
 import { Asset, AssetType } from "./util_asset";
-import { APIContent, get_cache } from "./util_cache";
+import { APIContent, get_cache, remove_cache } from "./util_cache";
 
 export enum DatabaseUserRole {
     ADMIN  = "admin",
@@ -78,6 +78,18 @@ interface DatabaseAsset extends Omit<InferSchemaType<typeof DatabaseAssetSchema>
     price: DatabasePrice[]
 };
 
+const DatabaseMarkupSchema = new Backend.server_database.Schema({
+    id:      {type: String, required: true},
+    type:    {type: String, required: true, enum: Object.values(DatabaseAssetType)},
+    content: {type: String, required: true},
+    updated: {type: Date,   required: true}
+});
+
+const DatabaseMarkupModel = Backend.server_database.models.markups || Backend.server_database.model("markups", DatabaseMarkupSchema);
+interface DatabaseMarkup extends Omit<InferSchemaType<typeof DatabaseMarkupSchema>, "updated"> {
+    updated: Date
+}
+
 export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser | null> {
     for (let attempt = 0; attempt < 5; attempt++) try {
         return await DatabaseUserModel.findOneAndUpdate({
@@ -95,7 +107,8 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
             id: Crypto.randomUUID()
         }}, {
             upsert: true,
-            new:    true
+            new:    true,
+            projection: {_id: 0, __v: 0, "discord._id": 0}
         });
     } catch (error) {
         if ((error as any).code !== 11000) return null;
@@ -105,11 +118,44 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
 
 export async function get_assets(asset_type: AssetType): Promise<Asset[]> {
     const asset_matcher = ((asset_type !== AssetType.ALL) ? {type: asset_type} : {});
-    return await DatabaseAssetModel.find(asset_matcher);
+    return await DatabaseAssetModel.find(asset_matcher, undefined, {projection: {_id: 0, __v: 0, "price._id": 0}});
 }
 
 export async function get_assets_cached(asset_type: AssetType): Promise<APIContent<Asset[]>> {
     return await get_cache(`assets/${asset_type}`, undefined, async () => {
         return await get_assets(asset_type);
     });
+}
+
+export async function set_markup(markup_id: string, markup_type: AssetType, markup_content: string): Promise<DatabaseMarkup> {
+    const markup_data = await DatabaseMarkupModel.findOneAndUpdate({
+        id: markup_id
+    }, {$set: {
+        id:      markup_id,
+        type:    markup_type,
+        content: markup_content,
+        updated: new Date()
+    }}, {
+        upsert: true,
+        new:    true,
+        projection: {_id: 0, __v: 0}
+    });
+    await remove_cache("markups");
+    return markup_data;
+}
+
+export async function get_markup_all(): Promise<DatabaseMarkup[]> {
+    return await DatabaseMarkupModel.find({}, undefined, {projection: {_id: 0, __v: 0}});
+}
+
+export async function get_markup_all_cached(): Promise<APIContent<DatabaseMarkup[]>> {
+    return await get_cache(`markups`, undefined, async () => {
+        return await get_markup_all();
+    });
+}
+
+export async function get_markup(markup_id: string): Promise<DatabaseMarkup | null> {
+    return await DatabaseMarkupModel.findOne({
+        id: markup_id
+    }, undefined, {projection: {_id: 0, __v: 0}});
 }

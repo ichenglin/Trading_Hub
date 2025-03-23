@@ -69,16 +69,14 @@ export interface Asset {
     name:  string,
     alias: string[],
     icon:  string,
-    price: AssetPrice[],
-    page:  string
+    price: AssetPrice[]
 }
 
 export interface AssetPrice {
     currency:   string,
     amount:     number,
     source:     string,
-    obtainable: boolean,
-    tooltip:    (string | null)
+    obtainable: boolean
 }
 
 export enum AssetType {

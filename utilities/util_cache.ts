@@ -23,6 +23,10 @@ export function get_error<CacheContent>(error_result: CacheContent): APIContent<
     } as APIContent<CacheContent>;
 }
 
+export async function remove_cache(cache_key: string): Promise<boolean> {
+    return ((await Backend.server_cache.del(`CACHE_${cache_key}`)) === 1);
+}
+
 export async function get_session(session_id: string): Promise<DatabaseUser | null> {
     // TODO: refresh session expiration
     const session_data  = await Backend.server_cache.get(`SESSION_${session_id}`);

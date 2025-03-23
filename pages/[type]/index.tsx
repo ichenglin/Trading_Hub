@@ -6,13 +6,13 @@ import type { NextPageLayout } from "../_app";
 import { AssetCategoryAPI, AssetGroupAPI } from "../api/categories";
 import { get_sort_price } from "@/utilities/util_sort";
 import { Asset, AssetGroup, CurrencyConverter, get_categories } from "@/utilities/util_asset";
-import styles from "@/styles/pages/Explore.module.css";
+import styles from "@/styles/pages/Catalog.module.css";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchDollar, faAngleLeft, faAngleRight, faMagnifyingGlass, faArrowDownWideShort, faTableList, faStar, faPrint, faEye } from "@fortawesome/free-solid-svg-icons";
 
-const Explore: NextPageLayout<{page_group: AssetGroup}> = (props) => {
+const Catalog: NextPageLayout<{page_group: AssetGroup}> = (props) => {
 
     const [page_assets,     set_assets]     = useState([] as Asset[]);
     const [page_currencies, set_currencies] = useState({} as CurrencyConverter);
@@ -206,7 +206,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	}};
 }
 
-export default Explore;
+export default Catalog;
 
 interface SearchParameters {
     search_text: (string | null),
