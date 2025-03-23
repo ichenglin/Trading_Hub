@@ -189,9 +189,10 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                         </div>
                     </section>
                     <section className={styles.footer}>
+                        <span className="header_offset" id="wraps"/>
                         <div>
                             {(props.page_wraps.length > 0) && (<>
-                                <h2 id="wraps">Weapon Wraps</h2>
+                                <h2>{props.page_group.name.slice(0, -1)} Wraps</h2>
                                 <div className={styles.related}>
                                     {props.page_wraps.map((wrap_data, wrap_index) => (
                                         <Link href={`/${wrap_data.type}/${wrap_data.id}`} key={wrap_index}>

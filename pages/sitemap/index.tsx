@@ -5,7 +5,8 @@ import type { NextPageLayout } from "../_app";
 // data
 import data_sitemaps from "@/data/data_sitemaps.json";
 import data_links from "@/data/data_links.json";
-import data_pages from "@/data/data_pages.json";
+import { get_assets, get_assets_cached } from "@/utilities/util_database";
+import { AssetType } from "@/utilities/util_asset";
 
 const routes_blocked = [
     "/_app",
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context_response.write([
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
         "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">",
-        ...website_sitemaps().map(route_data => {
+        ...(await website_sitemaps()).map(route_data => {
             const route_metadata = route_data.map(route_xml => `<${route_xml.name}>${route_xml.value}</${route_xml.name}>`).join("");
             return `<url>${route_metadata}</url>`;
         }),
@@ -31,9 +32,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {props: {}};
 };
 
-function website_sitemaps() {
+async function website_sitemaps() {
     const routes_modified = (new Date()).toISOString().slice(0, 10);
-	const routes_url      = [...website_routes(), ...website_files(), ...data_sitemaps];
+	const routes_url      = [...website_page_routes(), ...(await website_asset_routes()), ...data_sitemaps];
     const routes_ranked   = routes_url.map(page_url => {
         const page_link = (page_url.match(/^https?:\/\/(.+)$/) as RegExpMatchArray)[1];
         const page_rank = (page_link.split(/[\/\.]+/).length - 1);
@@ -50,7 +51,7 @@ function website_sitemaps() {
     ]);
 }
 
-function website_routes() {
+function website_page_routes() {
     const routes_directory = glob.sync("pages/**/*.tsx");
     const routes_pathname  = routes_directory.filter(page_directory => (page_directory.match(/[^\w\.\/]/) === null)).map(page_directory => (page_directory.match(/^pages\/(.+)\.tsx$/) as RegExpMatchArray)[1].split("/")).map(page_pathname => {
         const pathname_ending = (page_pathname.length - 1);
@@ -62,8 +63,9 @@ function website_routes() {
     return routes_valid.map(page_pathname => `${data_links.link_website}${page_pathname}`);
 }
 
-function website_files() {
-    return data_pages.filter(page_data => page_data.sitemap).map(page_data => `${data_links.link_website}${page_data.pathname}`);
+async function website_asset_routes() {
+    const server_assets = (await get_assets_cached(AssetType.ALL)).result;
+    return server_assets.map(asset_data => `${data_links.link_website}/${asset_data.type}/${asset_data.id}`);
 }
 
 const Sitemap: NextPageLayout = () => null;
