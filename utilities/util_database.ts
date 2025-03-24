@@ -92,7 +92,7 @@ interface DatabaseMarkup extends Omit<InferSchemaType<typeof DatabaseMarkupSchem
 
 export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser | null> {
     for (let attempt = 0; attempt < 5; attempt++) try {
-        return await DatabaseUserModel.findOneAndUpdate({
+        return get_serialized(await DatabaseUserModel.findOneAndUpdate({
             "discord.id": discord_user.id
         }, {$set: {
             username: discord_user.username,
@@ -109,7 +109,7 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
             upsert: true,
             new:    true,
             projection: {_id: 0, __v: 0, "discord._id": 0}
-        });
+        }));
     } catch (error) {
         if ((error as any).code !== 11000) return null;
     }
@@ -118,7 +118,7 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
 
 export async function get_assets(asset_type: AssetType): Promise<Asset[]> {
     const asset_matcher = ((asset_type !== AssetType.ALL) ? {type: asset_type} : {});
-    return await DatabaseAssetModel.find(asset_matcher, undefined, {projection: {_id: 0, __v: 0, "price._id": 0}});
+    return get_serialized(await DatabaseAssetModel.find(asset_matcher, undefined, {projection: {_id: 0, __v: 0, "price._id": 0}}));
 }
 
 export async function get_assets_cached(asset_type: AssetType): Promise<APIContent<Asset[]>> {
@@ -128,7 +128,7 @@ export async function get_assets_cached(asset_type: AssetType): Promise<APIConte
 }
 
 export async function set_markup(markup_id: string, markup_type: AssetType, markup_content: string): Promise<DatabaseMarkup> {
-    const markup_data = await DatabaseMarkupModel.findOneAndUpdate({
+    const markup_data = get_serialized(await DatabaseMarkupModel.findOneAndUpdate({
         id: markup_id
     }, {$set: {
         id:      markup_id,
@@ -139,13 +139,13 @@ export async function set_markup(markup_id: string, markup_type: AssetType, mark
         upsert: true,
         new:    true,
         projection: {_id: 0, __v: 0}
-    });
+    }));
     await remove_cache("markups");
     return markup_data;
 }
 
 export async function get_markup_all(): Promise<DatabaseMarkup[]> {
-    return await DatabaseMarkupModel.find({}, undefined, {projection: {_id: 0, __v: 0}});
+    return get_serialized(await DatabaseMarkupModel.find({}, undefined, {projection: {_id: 0, __v: 0}}));
 }
 
 export async function get_markup_all_cached(): Promise<APIContent<DatabaseMarkup[]>> {
@@ -155,7 +155,11 @@ export async function get_markup_all_cached(): Promise<APIContent<DatabaseMarkup
 }
 
 export async function get_markup(markup_id: string): Promise<DatabaseMarkup | null> {
-    return await DatabaseMarkupModel.findOne({
+    return get_serialized(await DatabaseMarkupModel.findOne({
         id: markup_id
-    }, undefined, {projection: {_id: 0, __v: 0}});
+    }, undefined, {projection: {_id: 0, __v: 0}}));
+}
+
+function get_serialized<DatabaseContent>(database_content: DatabaseContent): DatabaseContent {
+    return JSON.parse(JSON.stringify(database_content));
 }
