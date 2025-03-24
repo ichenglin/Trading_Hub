@@ -95,6 +95,9 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                 <section className={styles.viewer}>
                     <section className={styles.namecard}>
                         <div className={styles.grid}>
+                            <div className={styles.title} style={{color: `${color_currency(props.page_asset, props.page_currencies).slice(0, -2)}`}}>
+                                <h1>{props.page_asset.name}</h1>
+                            </div>
                             <div className={styles.icon}>
                                 <Image src={`/api/assets/${props.page_asset.type}/${props.page_asset.id}`} alt={props.page_asset.name} fill style={{backgroundColor: color_currency(props.page_asset, props.page_currencies)}}/>
                                 <div className={styles.wraps}>
@@ -112,9 +115,6 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                         </Link>
                                     )}
                                 </div>
-                            </div>
-                            <div className={styles.title} style={{color: `${color_currency(props.page_asset, props.page_currencies).slice(0, -2)}`}}>
-                                <h1>{props.page_asset.name}</h1>
                             </div>
                             <div className={styles.stats}>
                                 <div className={styles.price}>

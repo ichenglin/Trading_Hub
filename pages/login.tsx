@@ -23,7 +23,7 @@ const Login: NextPageLayout<LoginProps> = (props) => {
     useEffect(() => {
         const session_cookie = cookie_parse(document.cookie);
         if (session_cookie.SESSION_USER !== undefined) page_router.push("/");
-    }, []);
+    });
 
     return (
         <section className={styles.container}>

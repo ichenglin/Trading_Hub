@@ -69,3 +69,27 @@
     color: #007acc;
     filter: brightness(150%);
 }
+
+@media screen and (max-width: 500px) {
+    .card {
+        scale: 0.8;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .card {
+        scale: 0.7;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .card {
+        scale: 0.6;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .card {
+        scale: 0.5;
+    }
+}
