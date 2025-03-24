@@ -51,8 +51,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
             background: page_color
         }}).png().toBuffer();
         const buffer_asset = await sharp(path_asset).resize({
-            width:      400,
-            height:     240,
+            width:      ((format_request === AssetImageFormat.FIXED) ? 300 : 400),
+            height:     ((format_request === AssetImageFormat.FIXED) ? 300 : 240),
             fit:        "contain",
             background: "#00000000"
         }).toBuffer();
