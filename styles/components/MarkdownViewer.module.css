@@ -26,3 +26,7 @@
     height: 2px;
     background-color: #28A3F5;
 }
+
+.markdown li::marker {
+    color: unset;
+}
