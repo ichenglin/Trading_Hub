@@ -28,7 +28,7 @@ const PageHeader: NextPageLayout = () => {
 		set_cookie(cookie_parse(document.cookie));
 	}, []);
 
-	const dropdown_toggle = (click_event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
+	const dropdown_toggle = () => {
 		const header_element  = document.getElementsByClassName(styles.header)[0];
 		const dropdown_active = (header_element.getAttribute("dropdown-active") === "true");
 		header_element.setAttribute("dropdown-active", (dropdown_active ? "false" : "true"));
@@ -62,11 +62,11 @@ const PageHeader: NextPageLayout = () => {
 					<span>Rankings</span>
 				</Link>
 			</nav>
-			<a className={styles.dropdown} target="_blank" onClick={dropdown_toggle}>
+			<button className={styles.dropdown} onClick={dropdown_toggle}>
 				<FontAwesomeIcon className={styles.inactive} icon={faBars}  width="14" height="14"/>
 				<FontAwesomeIcon className={styles.active} icon={faXmark} width="14" height="14"/>
 				<span>Links</span>
-			</a>
+			</button>
 			<Link className={styles.contact} href={(cookie.SESSION_USER !== undefined) ? `/profile/${cookie.SESSION_USER}` : "/login"}>
 				<FontAwesomeIcon icon={faDiscord} width="14" height="14"/>
 				<span>{cookie.SESSION_NAME ?? "Login with Discord"}</span>

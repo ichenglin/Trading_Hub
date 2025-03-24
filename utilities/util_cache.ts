@@ -27,10 +27,11 @@ export async function remove_cache(cache_key: string): Promise<boolean> {
     return ((await Backend.server_cache.del(`CACHE_${cache_key}`)) === 1);
 }
 
-export async function get_session(session_id: string): Promise<DatabaseUser | null> {
+export async function get_session(session_id: string, session_invalidate: boolean = false): Promise<DatabaseUser | null> {
     // TODO: refresh session expiration
     const session_data  = await Backend.server_cache.get(`SESSION_${session_id}`);
     const session_exist = (session_data !== null);
+    if (session_exist && session_invalidate) await Backend.server_cache.del(`SESSION_${session_id}`);
     return (session_exist ? JSON.parse(session_data) : null);
 }
 

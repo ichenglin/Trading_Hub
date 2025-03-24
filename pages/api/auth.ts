@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { DiscordUser, get_auth_info, get_auth_token } from "@/utilities/util_auth";
+import { get_auth_info, get_auth_token } from "@/utilities/util_auth";
 import { set_session } from "@/utilities/util_cache";
-import { DatabaseUser, DatabaseUserModel, set_user } from "@/utilities/util_database";
+import { set_user } from "@/utilities/util_database";
 import { validate_string } from "@/utilities/util_validate";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {

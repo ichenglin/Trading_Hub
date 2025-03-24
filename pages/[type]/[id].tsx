@@ -1,4 +1,4 @@
-import FileSystem from "fs";
+import { useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,13 +12,12 @@ import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
 import { get_currencies_cached } from "../api/currencies";
 import { asset_beside, AssetNeighbor, color_currency, markup_template } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
+import ObjectMarkdownEditor from "@/components/object_editor_markdown";
+import { cookie_parse } from "@/utilities/util_cookie";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDroplet, faBoltLightning, faPersonWalking, faBullseye, faTags, faSquarePollVertical, faIdCard, faChevronRight, faChevronLeft, faLightbulb, faPencil, faShare, faStar, faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
-import ObjectMarkdownEditor from "@/components/object_editor_markdown";
-import { useEffect, useState } from "react";
-import { cookie_parse } from "@/utilities/util_cookie";
 
 enum CatalogItemEditStatus {
     VERIFYING = "Verifying",
