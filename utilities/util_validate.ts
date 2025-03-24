@@ -7,6 +7,12 @@ export function validate_string(request_string: (string | undefined | null)): bo
     return (string_type && string_length);
 }
 
+export function validate_enum<EnumConversion>(request_string: (EnumConversion | undefined | null), matching_enum: {[key: string]: EnumConversion}): boolean {
+    const enum_type  = ((typeof request_string) === "string");
+    const enum_exist = (enum_type && Object.values(matching_enum).includes(request_string));
+    return (enum_type && enum_exist);
+}
+
 export function validate_type(request_type: (string | undefined | null)): boolean {
     const type_type  = ((typeof request_type) === "string");
     const type_exist = (type_type && Object.values(AssetType).includes(request_type as AssetType));

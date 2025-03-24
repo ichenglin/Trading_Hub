@@ -3,20 +3,29 @@ import getConfig from "next/config";
 import sharp from "sharp";
 import { AssetType } from "@/utilities/util_asset";
 import { get_cache, get_error } from "@/utilities/util_cache";
-import { validate_string, validate_type } from "@/utilities/util_validate";
+import { validate_enum, validate_string, validate_type } from "@/utilities/util_validate";
 import { get_currencies_cached } from "../../currencies";
 import { get_assets_cached } from "@/utilities/util_database";
 
+enum AssetImageFormat {
+    CONTAIN = "contain",
+    FIXED   = "fixed"
+};
+
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     // check type & pathname valid
-    const type_request = (request.query.type as string);
-    const type_valid   = validate_type(type_request);
-    const id_request   = (request.query.id as string);
-    const id_valid     = validate_string(id_request)
+    const type_request   = (request.query.type as string);
+    const type_valid     = validate_type(type_request);
+    const id_request     = (request.query.id as string);
+    const id_valid       = validate_string(id_request);
     if ((!type_valid) || (!id_valid)) {
         response.status(404).json(get_error(undefined));
         return;
     }
+    // optional format
+    let   format_request = (request.query.format as AssetImageFormat);
+    const format_valid   = validate_enum(format_request, AssetImageFormat); 
+    if (!format_valid) format_request = AssetImageFormat.CONTAIN;
     // check image valid
     const assets_all   = await get_assets_cached(AssetType.ALL);
     const assets_match = assets_all.result.find(asset_data => {
@@ -29,7 +38,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return;
     }
     // send image
-    response.status(200).setHeader("Content-Type", "image/png").send(Buffer.from((await get_cache(`assets/${type_request}/${id_request}`, undefined, async () => {
+    response.status(200).setHeader("Content-Type", "image/png").send(Buffer.from((await get_cache(`assets/${type_request}/${id_request}/${format_request}`, undefined, async () => {
         // watermark image
         const path_asset       = `${getConfig().serverRuntimeConfig.PROJECT_ROOT}/assets${assets_match.icon}`;
         const path_watermark   = `${getConfig().serverRuntimeConfig.PROJECT_ROOT}/public/images/watermark.png`;
@@ -37,7 +46,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         const page_color       = ((assets_match.price.length > 0) ? `${page_currency[assets_match.price[0].currency as keyof typeof page_currency].color}7f` : "#9ca3af7f");
         const buffer_background = await sharp({create: {
             width:      400,
-            height:     240,
+            height:     ((format_request === AssetImageFormat.FIXED) ? 400 : 240),
             channels:   4,
             background: page_color
         }}).png().toBuffer();
@@ -54,9 +63,9 @@ export default async function handler(request: NextApiRequest, response: NextApi
             background: "#00000000"
         }).toBuffer();
         return await sharp({create: {
-            width: 400,
-            height: 240,
-            channels: 3,
+            width:      400,
+            height:     ((format_request === AssetImageFormat.FIXED) ? 400 : 240),
+            channels:   3,
             background: "#ffffff"
         }}).png().composite([{
             input:   buffer_background,

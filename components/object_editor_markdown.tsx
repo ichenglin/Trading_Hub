@@ -4,19 +4,24 @@ import { Dispatch } from "react";
 import type { NextPageLayout } from "../pages/_app";
 import dynamic from "next/dynamic";
 
-const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {ssr: false});
+// fonts
+import { Ubuntu_Mono } from "next/font/google";
 
-const CUSTOM_STYLE = `.w-md-editor {${[
+const font_mono = Ubuntu_Mono({subsets: ["latin"], weight: ["400"]});
+const MDEditor  = dynamic(() => import("@uiw/react-md-editor"), {ssr: false});
+
+const CUSTOM_STYLE = `.w-md-editor {\n${[
     "border-radius: 0px;",
-    "",
     "--md-editor-background-color: #434749;",
     "--md-editor-box-shadow-color: #ffffff;"
-].join("\n")}} .w-md-editor-text-input, .w-md-editor-text-pre .code-line {${[
-    "font-size: 1rem !important;",
-    "line-height: 1rem !important;"
-].join("\n")}} .w-md-editor-text-pre .code-line {${[
-    "display: block;"
-].join("\n")}}`;
+].join("\n")}\n}\nbody .w-md-editor-text-pre > code, body .w-md-editor-text-input {\n${[
+    "font-size: 14px !important;",
+    "line-height: 18px !important;",
+    `font-family: ${font_mono.style.fontFamily} !important;`
+].join("\n")}\n}\n.token {\n${[
+    // incase mono font failed to load, bold mess up the text aligning
+    "font-weight: 400 !important;"
+].join("\n")}\n}`;
 
 const ObjectMarkdownEditor: NextPageLayout<{page_text: string, set_text: Dispatch<any>}> = (props) => {
 	return (

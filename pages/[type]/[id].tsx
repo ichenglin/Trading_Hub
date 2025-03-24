@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import { NextPageLayout } from "../_app";
 import { validate_string } from "@/utilities/util_validate";
 import { get_assets, get_assets_cached, get_markup_all_cached } from "@/utilities/util_database";
-import { Asset, AssetGroup, AssetType, CurrencyConverter, get_categories } from "@/utilities/util_asset";
+import { Asset, AssetGroup, AssetType, CurrencyConverter, CurrencyType, get_categories } from "@/utilities/util_asset";
 import styles from "@/styles/pages/CatalogItem.module.css";
 import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
 import { get_currencies_cached } from "../api/currencies";
-import { asset_beside, AssetNeighbor, color_currency, markup_template } from "@/utilities/util_render";
+import { asset_beside, AssetNeighbor, color_currency, markup_template, string_join } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
 import ObjectMarkdownEditor from "@/components/object_editor_markdown";
 import { cookie_parse } from "@/utilities/util_cookie";
@@ -55,7 +55,6 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const page_edit_request = () => {
         if (page_edit.editing) {
             set_edit({...page_edit, editing: false});
-            set_text(props.page_markup);
             return;
         }
         const page_cookie  = cookie_parse(document.cookie);
@@ -276,11 +275,29 @@ export const getStaticProps: GetStaticProps = async (context) => {
         if (!asset_data.id.startsWith(page_asset.id)) return false;
         return true;
     });
-    //find markup
+    const page_wraps_minimal = page_wraps.slice(0, Math.min(page_wraps.length, 3)).map(wrap_data => wrap_data.name);
+    // find markup
     const page_markup = (await get_markup_all_cached()).result.find(markup_data => (markup_data.id === page_id));
+    // find prices
+    const converter_number = new Intl.NumberFormat("en-US");
+    const page_prices      = page_asset.price.map(price_data => {
+        if (price_data.currency === CurrencyType.QUEST) return price_data.source;
+        if (price_data.amount   <=  0)                  return price_data.source;
+        return `${converter_number.format(price_data.amount)} ${price_data.currency} in ${price_data.source}`;
+    });
+    // generate pronouns
+    const page_pronouns_list = ["It", `The ${page_asset.type.slice(0, -1)}`, "It", `The ${page_asset.type.slice(0, -1)}`];
+    let   page_pronouns_next = 0;
 	return {props: {
 		page_name:        page_asset.name,
-		page_description: `${page_asset.name} is one of the many ${page_asset.type} in Roblox Flagwars`,
+		page_description: [
+            `The ${page_asset.name} is one of the ${page_asset.type} in Flagwars.`,
+            ((page_asset.alias.length > 0) ? `${page_pronouns_list[page_pronouns_next++]} was also referred to as ${string_join(page_asset.alias, "or")}.`                         : undefined),
+            ((page_prices.length      > 0) ? `${page_pronouns_list[page_pronouns_next++]} was obtainable for ${string_join(page_prices)}.`                                         : undefined),
+            ((page_wraps.length       > 0) ? `${page_pronouns_list[page_pronouns_next++]} has ${page_wraps.length} wraps in total such as the ${string_join(page_wraps_minimal)}.` : undefined),
+            `Check ${page_pronouns_list[page_pronouns_next++].toLowerCase()} out right now on Flagwars Wiki.`
+        ].filter(sentence_string => (sentence_string !== undefined)).join(" "),
+        page_image:       `/api/assets/${page_asset.type}/${page_asset.id}?format=fixed`,
 		page_pathname:    `/${page_asset.type}/${page_asset.id}`,
 		// local props
         page_asset:       page_asset,
