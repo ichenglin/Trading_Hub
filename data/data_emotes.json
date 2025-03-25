@@ -1,0 +1,583 @@
+[
+	{
+		"id": "ascending",
+		"name": "Ascending",
+		"alias": [],
+		"icon": "/emotes/ascending.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 2 Level 8",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "backflip",
+		"name": "Backflip",
+		"alias": [],
+		"icon": "/emotes/backflip.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 2",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "balance",
+		"name": "Balance",
+		"alias": [],
+		"icon": "/emotes/balance.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 17",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "basket_of_hearts",
+		"name": "Basket Of Hearts",
+		"alias": [],
+		"icon": "/emotes/basket_of_hearts.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 14000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "bow",
+		"name": "Bow",
+		"alias": [],
+		"icon": "/emotes/bow.png",
+		"price": []
+	},
+	{
+		"id": "cane_dance",
+		"name": "Cane Dance",
+		"alias": [],
+		"icon": "/emotes/cane_dance.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 3 Day 2",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "chained_heart",
+		"name": "Chained Heart",
+		"alias": [],
+		"icon": "/emotes/chained_heart.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 149,
+				"source": "Valentine '25 Bundle",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "cheering",
+		"name": "Cheering",
+		"alias": [],
+		"icon": "/emotes/cheering.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 7",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "chocolates",
+		"name": "Chocolates",
+		"alias": [],
+		"icon": "/emotes/chocolates.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 16000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "clapping",
+		"name": "Clapping",
+		"alias": [],
+		"icon": "/emotes/clapping.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 15",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "dial_phone",
+		"name": "Dial Phone",
+		"alias": [],
+		"icon": "/emotes/dial_phone.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 17000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "distress",
+		"name": "Distress",
+		"alias": [],
+		"icon": "/emotes/distress.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 2 Level 34",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "duck_dance",
+		"name": "Duck Dance",
+		"alias": [],
+		"icon": "/emotes/duck_dance.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 34",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "facepalm",
+		"name": "Facepalm",
+		"alias": [],
+		"icon": "/emotes/facepalm.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 28",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "gift_flowers",
+		"name": "Gift Flowers",
+		"alias": [],
+		"icon": "/emotes/gift_flowers.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 21500,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "gingerbread_eater",
+		"name": "Gingerbread Eater",
+		"alias": [],
+		"icon": "/emotes/gingerbread_eater.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 3 Level 5",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "headless_greeting",
+		"name": "Headless Greeting",
+		"alias": [],
+		"icon": "/emotes/headless_greeting.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 2 Level 31",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "hot_chocolate",
+		"name": "Hot Chocolate",
+		"alias": [],
+		"icon": "/emotes/hot_chocolate.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 3 Level 9",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "impatient",
+		"name": "Impatient",
+		"alias": [],
+		"icon": "/emotes/impatient.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 20",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "jingle_bell",
+		"name": "Jingle Bell",
+		"alias": [],
+		"icon": "/emotes/jingle_bell.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 3 Level 17",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "laugh",
+		"name": "Laugh",
+		"alias": [],
+		"icon": "/emotes/laugh.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 2 Level 3",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "meditation",
+		"name": "Meditation",
+		"alias": [],
+		"icon": "/emotes/meditation.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 48",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "padlock_hearts",
+		"name": "Padlock Hearts",
+		"alias": [],
+		"icon": "/emotes/padlock_hearts.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 19000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "parasol",
+		"name": "Parasol",
+		"alias": [],
+		"icon": "/emotes/parasol.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 23000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "play_dead",
+		"name": "Play Dead",
+		"alias": [],
+		"icon": "/emotes/play_dead.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 2 Level 17",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "pot_of_gold",
+		"name": "Pot Of Gold",
+		"alias": [],
+		"icon": "/emotes/pot_of_gold.png",
+		"price": [
+			{
+                "currency": "clover",
+                "amount": 25,
+                "source": "St Patrick's Skin Crate",
+                "obtainable": false
+            }
+		]
+	},
+	{
+		"id": "pushups",
+		"name": "Pushups",
+		"alias": [],
+		"icon": "/emotes/pushups.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 42",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "rainbow_dazzle",
+		"name": "Rainbow Dazzle",
+		"alias": [],
+		"icon": "/emotes/rainbow_dazzle.png",
+		"price": [
+			{
+                "currency": "clover",
+                "amount": 25,
+                "source": "St Patrick's Skin Crate",
+                "obtainable": false
+            }
+		]
+	},
+	{
+		"id": "santas_gift_sack",
+		"name": "Santas Gift Sack",
+		"alias": [],
+		"icon": "/emotes/santas_gift_sack.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 3 Level 37",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "santas_tablet",
+		"name": "Santas Tablet",
+		"alias": [],
+		"icon": "/emotes/santas_tablet.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 3 Level 26",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "scared",
+		"name": "Scared",
+		"alias": [],
+		"icon": "/emotes/scared.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 2 Level 12",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "secret_santa",
+		"name": "Secret Santa",
+		"alias": [],
+		"icon": "/emotes/secret_santa.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 3 Day 15",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "shadow_boxing",
+		"name": "Shadow Boxing",
+		"alias": [],
+		"icon": "/emotes/shadow_boxing.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 2 Level 25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "shrug",
+		"name": "Shrug",
+		"alias": [],
+		"icon": "/emotes/shrug.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 12",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "side_shuffle",
+		"name": "Side Shuffle",
+		"alias": [],
+		"icon": "/emotes/side_shuffle.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 2 Level 43",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "skydiving",
+		"name": "Skydiving",
+		"alias": [],
+		"icon": "/emotes/skydiving.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 1 Level 25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "sleigh",
+		"name": "Sleigh",
+		"alias": [],
+		"icon": "/emotes/sleigh.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 3 Level 30",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "slip_n_fall",
+		"name": "Slip n' Fall",
+		"alias": [],
+		"icon": "/emotes/slip_n_fall.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 0,
+				"source": "Season 1 Level 41",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "step_it_up",
+		"name": "Step It Up",
+		"alias": [],
+		"icon": "/emotes/step_it_up.png",
+		"price": [
+			{
+                "currency": "clover",
+                "amount": 25,
+                "source": "St Patrick's Skin Crate",
+                "obtainable": false
+            }
+		]
+	},
+	{
+		"id": "thriller",
+		"name": "Thriller",
+		"alias": [],
+		"icon": "/emotes/thriller.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 2 Level 36",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "violin_serenade",
+		"name": "Violin Serenade",
+		"alias": [],
+		"icon": "/emotes/violin_serenade.png",
+		"price": [
+			{
+				"currency": "heart",
+				"amount": 25000,
+				"source": "Valentine '25",
+				"obtainable": false
+			}
+		]
+	},
+	{
+		"id": "zombie_walk",
+		"name": "Zombie Walk",
+		"alias": [],
+		"icon": "/emotes/zombie_walk.png",
+		"price": [
+			{
+				"currency": "robux",
+				"amount": 699,
+				"source": "Season 2 Level 21",
+				"obtainable": false
+			}
+		]
+	}
+]
