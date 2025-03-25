@@ -13,8 +13,8 @@ export function string_join(string_list: string[], string_delimiter: ("and" | "o
 }
 
 export function string_match(string_a: string, string_b: string): number {
-    const words_a      = string_a.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined));
-    const words_b      = string_b.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined));
+    const words_a      = string_a.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined)) as string[];
+    const words_b      = string_b.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined)) as string[];
     const words_used   = {} as {[key: string]: boolean}
     let   words_common = 0;
     for (const word_a of words_a) words_used[word_a] = true;
