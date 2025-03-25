@@ -29,8 +29,8 @@ enum CatalogItemEditStatus {
 interface CatalogItemProps {
     page_asset:      Asset,
     page_wraps:      Asset[],
-    page_group:      AssetGroup,
-    page_related:    Asset[],
+    page_group:      string,
+    page_related:    string,
     page_neighbor:   AssetNeighbor,
     page_currencies: CurrencyConverter,
     page_markup:     string
@@ -40,7 +40,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const [page_edit, set_edit] = useState({editing: false, status: CatalogItemEditStatus.NONE});
     const [page_text, set_text] = useState("");
     const page_router           = useRouter();
-    const page_url              = `/${props.page_group.id}/${props.page_asset.id}`;
+    const page_url              = `/${props.page_asset.type}/${props.page_asset.id}`;
     const asset_wraps           = props.page_wraps.slice(0, Math.min(props.page_wraps.length, 4));
     const asset_wraps_more      = Math.max((props.page_wraps.length - 4), 0);
     const converter_number      = new Intl.NumberFormat("en-US");
@@ -176,7 +176,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                 <span><b>Last Updated:</b> 2025/03/22</span>
                                 <span className={styles.tree}>
                                     <span>Catalog</span>
-                                    <span><Link href={`/${props.page_group.id}`}>{props.page_group.name}</Link></span>
+                                    <span><Link href={`/${props.page_asset.type}`}>{props.page_group}</Link></span>
                                     <span>{props.page_asset.name}</span>
                                 </span>
                             </div>
@@ -206,11 +206,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                 </div>
                             </>)}
                             <h2>Related Items</h2>
-                            <ObjectMarkdownViewer source={[
-                                `Players who are interested in **${props.page_asset.name}** also searched for `,
-                                string_join(props.page_related.map(asset_data => `[${asset_data.name}](/${asset_data.type}/${asset_data.id})`)),
-                                "."
-                            ].join("")} margin={false}/>
+                            <ObjectMarkdownViewer source={props.page_related} margin={false}/>
                             <div className={styles.toolbox}>
                                 <div>
                                     <button style={{backgroundColor: "#f59e0b"}}>
@@ -285,6 +281,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const page_wraps_minimal = page_wraps.slice(0, Math.min(page_wraps.length, 3)).map(wrap_data => wrap_data.name);
     // find related
     const page_related = asset_related(server_assets, page_asset, 5);
+    const page_related_text = [
+        `Players who are interested in **${page_asset.name}** also searched for `,
+        string_join(page_related.map(asset_data => `[${asset_data.name}](/${asset_data.type}/${asset_data.id})`)),
+        "."
+    ].join("");
     // find markup
     const page_markup = (await get_markup_all_cached()).result.find(markup_data => (markup_data.id === page_id));
     // find prices
@@ -311,8 +312,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		// local props
         page_asset:       page_asset,
         page_wraps:       page_wraps,
-        page_group:       page_group,
-        page_related:     page_related,
+        page_group:       page_group.name,
+        page_related:     page_related_text,
         page_neighbor:    asset_beside(server_assets, page_id),
         page_currencies:  (await get_currencies_cached()).result,
 		page_markup:      (page_markup?.content ?? markup_template(page_asset, page_wraps, page_group))
