@@ -2,6 +2,7 @@
 
 # custom
 /assets
+/backup
 .env
 
 # dependencies

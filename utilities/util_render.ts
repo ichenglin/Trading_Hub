@@ -12,6 +12,20 @@ export function string_join(string_list: string[], string_delimiter: ("and" | "o
     return `${string_list.slice(0, -1).join(", ")}, ${string_delimiter} ${string_list[string_list.length - 1]}`;
 }
 
+export function string_match(string_a: string, string_b: string): number {
+    const words_a      = string_a.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined));
+    const words_b      = string_b.trim().split(/[^a-zA-Z0-9]/).map(word => word.match(/([a-zA-Z]+?)(e?s\b|\b)/)?.at(1)).filter(word => (word !== undefined));
+    const words_used   = {} as {[key: string]: boolean}
+    let   words_common = 0;
+    for (const word_a of words_a) words_used[word_a] = true;
+    for (const word_b of words_b) {
+        if (words_used[word_b] !== true) continue;
+        words_used[word_b] = false;
+        words_common++;
+    }
+    return words_common;
+}
+
 export function asset_beside(asset_list: Asset[], asset_id: string): AssetNeighbor {
     const asset_index  = asset_list.findIndex(asset_data => (asset_data.id === asset_id));
     const asset_total  = (asset_list.length);
@@ -23,6 +37,24 @@ export function asset_beside(asset_list: Asset[], asset_id: string): AssetNeighb
         asset_before: asset_list[asset_before],
         asset_after:  asset_list[asset_after]
     }
+}
+
+export function asset_related(asset_list: Asset[], asset_sample: Asset, asset_amount: number): Asset[] {
+    // ideally this response should be cached
+    return asset_list.map(asset_data => {
+        if (asset_sample.id === asset_data.id) return {
+            asset_data:   asset_data,
+            asset_rating: (-1)
+        };
+        let asset_rating = 0;
+        asset_rating += string_match(asset_sample.name, asset_data.name);
+        asset_rating += ((asset_sample.type                  === asset_data.type)                  ? 1   : 0);
+        asset_rating += ((asset_sample.price.at(0)?.currency === asset_data.price.at(0)?.currency) ? 0.5 : 0);
+        return {
+            asset_data:   asset_data,
+            asset_rating: asset_rating
+        };
+    }).sort((asset_a, asset_b) => (asset_b.asset_rating - asset_a.asset_rating)).map(asset_rated => asset_rated.asset_data).slice(0, Math.min(asset_list.length, asset_amount));
 }
 
 export function markup_template(asset_data: Asset, asset_wraps: Asset[], asset_group: AssetGroup): string {

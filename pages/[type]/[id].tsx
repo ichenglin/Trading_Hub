@@ -10,7 +10,7 @@ import { Asset, AssetGroup, AssetType, CurrencyConverter, CurrencyType, get_cate
 import styles from "@/styles/pages/CatalogItem.module.css";
 import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
 import { get_currencies_cached } from "../api/currencies";
-import { asset_beside, AssetNeighbor, color_currency, markup_template, string_join } from "@/utilities/util_render";
+import { asset_beside, asset_related, AssetNeighbor, color_currency, markup_template, string_join } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
 import ObjectMarkdownEditor from "@/components/object_editor_markdown";
 import { cookie_parse } from "@/utilities/util_cookie";
@@ -30,6 +30,7 @@ interface CatalogItemProps {
     page_asset:      Asset,
     page_wraps:      Asset[],
     page_group:      AssetGroup,
+    page_related:    Asset[],
     page_neighbor:   AssetNeighbor,
     page_currencies: CurrencyConverter,
     page_markup:     string
@@ -99,7 +100,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                             </div>
                             <div className={styles.icon}>
                                 <Image src={`/api/assets/${props.page_asset.type}/${props.page_asset.id}`} alt={props.page_asset.name} fill style={{backgroundColor: color_currency(props.page_asset, props.page_currencies)}}/>
-                                <div className={styles.wraps}>
+                                <div className={styles.preview}>
                                     {asset_wraps.map((wrap_data, wrap_index) => (
                                         <Link href={`/${wrap_data.type}/${wrap_data.id}`} key={wrap_index}>
                                             <Image src={`/api/assets/${wrap_data.type}/${wrap_data.id}`} alt={wrap_data.name} fill style={{backgroundColor: color_currency(wrap_data, props.page_currencies)}}/>
@@ -190,8 +191,8 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                         <span className="header_offset" id="wraps"/>
                         <div>
                             {(props.page_wraps.length > 0) && (<>
-                                <h2>{props.page_group.name.slice(0, -1)} Wraps</h2>
-                                <div className={styles.related}>
+                                <h2>{props.page_asset.name} Wraps</h2>
+                                <div className={styles.wraps}>
                                     {props.page_wraps.map((wrap_data, wrap_index) => (
                                         <Link href={`/${wrap_data.type}/${wrap_data.id}`} key={wrap_index}>
                                             <div>
@@ -204,6 +205,12 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                     ))}
                                 </div>
                             </>)}
+                            <h2>Related Items</h2>
+                            <ObjectMarkdownViewer source={[
+                                `Players who are interested in **${props.page_asset.name}** also searched for `,
+                                string_join(props.page_related.map(asset_data => `[${asset_data.name}](/${asset_data.type}/${asset_data.id})`)),
+                                "."
+                            ].join("")} margin={false}/>
                             <div className={styles.toolbox}>
                                 <div>
                                     <button style={{backgroundColor: "#f59e0b"}}>
@@ -276,6 +283,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         return true;
     });
     const page_wraps_minimal = page_wraps.slice(0, Math.min(page_wraps.length, 3)).map(wrap_data => wrap_data.name);
+    // find related
+    const page_related = asset_related(server_assets, page_asset, 5);
     // find markup
     const page_markup = (await get_markup_all_cached()).result.find(markup_data => (markup_data.id === page_id));
     // find prices
@@ -286,12 +295,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
         return `${converter_number.format(price_data.amount)} ${price_data.currency} in ${price_data.source}`;
     });
     // generate pronouns
-    const page_pronouns_list = ["It", `The ${page_asset.type.slice(0, -1)}`, "It", `The ${page_asset.type.slice(0, -1)}`];
+    const page_pronouns_list = ["It", `The ${page_group.name.slice(0, -1).toLowerCase()}`, "It", `The ${page_group.name.slice(0, -1).toLowerCase()}`];
     let   page_pronouns_next = 0;
 	return {props: {
 		page_name:        page_asset.name,
 		page_description: [
-            `The ${page_asset.name} is one of the ${page_asset.type} in Flagwars.`,
+            `The ${page_asset.name} is one of the ${page_group.name.toLowerCase()} in Flagwars.`,
             ((page_asset.alias.length > 0) ? `${page_pronouns_list[page_pronouns_next++]} was also referred to as ${string_join(page_asset.alias, "or")}.`                         : undefined),
             ((page_prices.length      > 0) ? `${page_pronouns_list[page_pronouns_next++]} was obtainable for ${string_join(page_prices)}.`                                         : undefined),
             ((page_wraps.length       > 0) ? `${page_pronouns_list[page_pronouns_next++]} has ${page_wraps.length} wraps in total such as the ${string_join(page_wraps_minimal)}.` : undefined),
@@ -303,6 +312,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         page_asset:       page_asset,
         page_wraps:       page_wraps,
         page_group:       page_group,
+        page_related:     page_related,
         page_neighbor:    asset_beside(server_assets, page_id),
         page_currencies:  (await get_currencies_cached()).result,
 		page_markup:      (page_markup?.content ?? markup_template(page_asset, page_wraps, page_group))

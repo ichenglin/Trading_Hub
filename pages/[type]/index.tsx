@@ -81,7 +81,7 @@ const Catalog: NextPageLayout<{page_group: AssetGroup}> = (props) => {
                             </div>
                             <div className={styles.label}>
                                 <h5>{asset_data.name}</h5>
-                                <span>{asset_data.type}</span>
+                                <span>{props.page_group.name}</span>
                             </div>
                             <div className={styles.pricetag}>
                                 {asset_data.price.map((asset_price, price_index) => {
