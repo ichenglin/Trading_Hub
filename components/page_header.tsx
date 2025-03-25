@@ -67,9 +67,9 @@ const PageHeader: NextPageLayout = () => {
 				<FontAwesomeIcon className={styles.active} icon={faXmark} width="14" height="14"/>
 				<span>Links</span>
 			</button>
-			<Link className={styles.contact} href={(cookie.SESSION_USER !== undefined) ? "/api/logout" : "/login"}>
+			<Link className={styles.contact} href={(cookie.SESSION_USER !== undefined) ? `/profile/${cookie.SESSION_USER}` : "/login"}>
 				<FontAwesomeIcon icon={faDiscord} width="14" height="14"/>
-				<span>{(cookie.SESSION_USER !== undefined) ? "Logout" : "Login with Discord"}</span>
+				<span>{cookie.SESSION_NAME ?? "Login with Discord"}</span>
 			</Link>
 		</header>
 	);
