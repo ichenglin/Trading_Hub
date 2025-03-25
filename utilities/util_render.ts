@@ -1,8 +1,33 @@
-import { Asset, AssetGroup, CurrencyConverter } from "./util_asset";
+import { Asset, CurrencyConverter } from "./util_asset";
 
-export function color_currency(asset_data: Asset, currency_converter: CurrencyConverter): string {
-    if (asset_data.price.length > 0) return `${currency_converter[asset_data.price[0].currency].color}7f`;
-    else                             return "#9ca3af7f";
+export enum NumberFormatType {
+    WORD,
+    ABBREVIATION
+};
+const NUMBER_FORMAT_UNITS = [
+    {[NumberFormatType.WORD]: "",          [NumberFormatType.ABBREVIATION]: ""},
+    {[NumberFormatType.WORD]: " Thousand", [NumberFormatType.ABBREVIATION]: "K"}, // or Kilodillion
+    {[NumberFormatType.WORD]: " Million",  [NumberFormatType.ABBREVIATION]: "M"},
+    {[NumberFormatType.WORD]: " Billion",  [NumberFormatType.ABBREVIATION]: "B"},
+    {[NumberFormatType.WORD]: " Trillion", [NumberFormatType.ABBREVIATION]: "T"}
+];
+
+export function key_whitelist(raw_object: object, key_allowed: string[]): object {
+    return Object.fromEntries(Object.entries(raw_object).filter(([key_name]) => key_allowed.includes(key_name)));
+}
+
+export function number_logbase(number_value: number, number_base: number): number {
+    return (Math.log(number_value) / Math.log(number_base));
+}
+
+export function number_print(number_value: number, number_digits: number, number_type: NumberFormatType): string {
+    // TODO: toFixed might round up if there are too less digits
+    const number_base        = Math.floor(number_logbase(number_value, 1E3));
+    const number_unit        = (NUMBER_FORMAT_UNITS.at(number_base) as (typeof NUMBER_FORMAT_UNITS[0]));
+    const number_significant = parseFloat((number_value / Math.pow(1E3, number_base)).toFixed  (number_digits)).toString();
+    if (number_base <  0)                          return parseFloat(number_value.toFixed      (number_digits)).toString();
+    if (number_base >= NUMBER_FORMAT_UNITS.length) return parseFloat(number_value.toExponential(number_digits)).toString().toUpperCase();
+    return `${number_significant}${number_unit[number_type]}`;
 }
 
 export function string_join(string_list: string[], string_delimiter: ("and" | "or") = "and"): string {
@@ -57,32 +82,9 @@ export function asset_related(asset_list: Asset[], asset_sample: Asset, asset_am
     }).sort((asset_a, asset_b) => (asset_b.asset_rating - asset_a.asset_rating)).map(asset_rated => asset_rated.asset_data).slice(0, Math.min(asset_list.length, asset_amount));
 }
 
-export function markup_template(asset_data: Asset, asset_wraps: Asset[], asset_group: AssetGroup): string {
-    const converter_number = new Intl.NumberFormat("en-US");
-    const warp_templates = [
-        "features **vibrant and eye-catching** design that is visually striking.",
-        "focus on clean, simple designs **without too much flair**, favor for players who prefer **simplicity**."
-    ]
-    return [
-        `# ${asset_group.name.slice(0, -1)} - ${asset_data.name}`,
-        ``,
-        `[${asset_data.name}](/${asset_group.id}/${asset_data.id}) is one of the many [${asset_group.id}](/${asset_group.id}) in Roblox Flagwars.`,
-        ((asset_data.alias.length > 0) ? `Though not the official designation, it was also known as ${string_join(asset_data.alias.map(alias_text => `**${alias_text}**`), "or")}.` : undefined),
-        ((asset_data.price.length > 0) ? `It cost ${string_join(asset_data.price.map(price_data => `**${converter_number.format(price_data.amount)} ${price_data.currency}** in ${price_data.source}`))}.` : undefined),
-        ``,
-        `## ${asset_group.name.slice(0, -1)} Customizations`,
-        ``,
-        ((asset_wraps.length >  0) ? `The ${asset_data.name} have a total of ${asset_wraps.length} ${asset_group.id.slice(0, -1)} warps, below is the list of them:` : undefined),
-        ((asset_wraps.length <= 0) ? `The ${asset_data.name} currently doesn't have any ${asset_group.id.slice(0, -1)} warps in-game.` : undefined),
-        ...asset_wraps.map((warp_data, warp_index) => `${warp_index + 1}. **[${warp_data.name}](/${warp_data.type}/${warp_data.id}):** ${warp_data.name} ${warp_templates[Math.floor(Math.random() * (warp_templates.length))]}`),
-        ``,
-        `## Note`,
-        ``,
-        `This page was automatically generated, feel free to **contribute** by **[logging in](/login)** with your Discord account.`,
-        `**Edit permissions** are currently limited to a **selected group of users** as we are still in the early stages of development.`,
-        `If you're interested in supporting the project, please **reach out to us for assistance**. Thank you!`,
-        ``
-    ].filter(line_text => (line_text !== undefined)).join("\n");
+export function price_color(asset_data: Asset, currency_converter: CurrencyConverter): string {
+    if (asset_data.price.length > 0) return `${currency_converter[asset_data.price[0].currency].color}7f`;
+    else                             return "#9ca3af7f";
 }
 
 export interface AssetNeighbor {

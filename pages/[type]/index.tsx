@@ -6,6 +6,7 @@ import type { NextPageLayout } from "../_app";
 import { AssetCategoryAPI, AssetGroupAPI } from "../api/categories";
 import { get_sort_price } from "@/utilities/util_sort";
 import { Asset, AssetGroup, CurrencyConverter, get_categories } from "@/utilities/util_asset";
+import { number_print, NumberFormatType } from "@/utilities/util_render";
 import styles from "@/styles/pages/Catalog.module.css";
 
 // icons
@@ -19,7 +20,6 @@ const Catalog: NextPageLayout<{page_group: AssetGroup}> = (props) => {
     const [page_categories, set_categories] = useState([] as AssetGroupAPI[]);
     const [page_loaded,     set_loaded]     = useState(false);
     const [page_search,     set_search]     = useState({search_text: null, search_sort: SearchSortType.PRICE_LH, search_view: SearchViewType.CARD} as SearchParameters);
-    const converter_number                  = new Intl.NumberFormat("en-US");
 
     useEffect(() => {
         (async () => {
@@ -86,7 +86,7 @@ const Catalog: NextPageLayout<{page_group: AssetGroup}> = (props) => {
                             <div className={styles.pricetag}>
                                 {asset_data.price.map((asset_price, price_index) => {
                                     const price_currency = page_currencies[asset_price.currency];
-                                    let   price_display  = converter_number.format(asset_price.amount);
+                                    let   price_display  = number_print(asset_price.amount, 2, NumberFormatType.ABBREVIATION);
                                     if      (asset_price.currency === "quest") price_display = "Quest";
                                     else if (asset_price.amount   <=  0)       price_display = "Free";
                                     return (<div className={styles.price} style={{backgroundColor: `${price_currency.color}7f`}} key={price_index}>

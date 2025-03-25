@@ -10,7 +10,7 @@ import { Asset, AssetGroup, AssetType, CurrencyConverter, CurrencyType, get_cate
 import styles from "@/styles/pages/CatalogItem.module.css";
 import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
 import { get_currencies_cached } from "../api/currencies";
-import { asset_beside, asset_related, AssetNeighbor, color_currency, markup_template, string_join } from "@/utilities/util_render";
+import { asset_beside, asset_related, AssetNeighbor, number_print, NumberFormatType, price_color, string_join } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
 import ObjectMarkdownEditor from "@/components/object_editor_markdown";
 import { cookie_parse } from "@/utilities/util_cookie";
@@ -43,7 +43,6 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const page_url              = `/${props.page_asset.type}/${props.page_asset.id}`;
     const asset_wraps           = props.page_wraps.slice(0, Math.min(props.page_wraps.length, 4));
     const asset_wraps_more      = Math.max((props.page_wraps.length - 4), 0);
-    const converter_number      = new Intl.NumberFormat("en-US");
 
     useEffect(() => {
         set_text(props.page_markup);
@@ -95,15 +94,15 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                 <section className={styles.viewer}>
                     <section className={styles.namecard}>
                         <div className={styles.grid}>
-                            <div className={styles.title} style={{color: `${color_currency(props.page_asset, props.page_currencies).slice(0, -2)}`}}>
+                            <div className={styles.title} style={{color: `${price_color(props.page_asset, props.page_currencies).slice(0, -2)}`}}>
                                 <h1>{props.page_asset.name}</h1>
                             </div>
                             <div className={styles.icon}>
-                                <Image src={`/api/assets/${props.page_asset.type}/${props.page_asset.id}`} alt={props.page_asset.name} fill style={{backgroundColor: color_currency(props.page_asset, props.page_currencies)}}/>
+                                <Image src={`/api/assets/${props.page_asset.type}/${props.page_asset.id}`} alt={props.page_asset.name} fill style={{backgroundColor: price_color(props.page_asset, props.page_currencies)}}/>
                                 <div className={styles.preview}>
                                     {asset_wraps.map((wrap_data, wrap_index) => (
                                         <Link href={`/${wrap_data.type}/${wrap_data.id}`} key={wrap_index}>
-                                            <Image src={`/api/assets/${wrap_data.type}/${wrap_data.id}`} alt={wrap_data.name} fill style={{backgroundColor: color_currency(wrap_data, props.page_currencies)}}/>
+                                            <Image src={`/api/assets/${wrap_data.type}/${wrap_data.id}`} alt={wrap_data.name} fill style={{backgroundColor: price_color(wrap_data, props.page_currencies)}}/>
                                         </Link>
                                     ))}
                                     {(asset_wraps_more > 0) && (
@@ -124,7 +123,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                     </h3>
                                     {props.page_asset.price.map((pricetag_data, pricetag_index) => {
                                         const pricetag_currency = props.page_currencies[pricetag_data.currency];
-                                        let   price_display     = converter_number.format(pricetag_data.amount);
+                                        let   price_display     = number_print(pricetag_data.amount, 2, NumberFormatType.ABBREVIATION);
                                         if      (pricetag_data.currency === "quest") price_display = "Quest";
                                         else if (pricetag_data.amount   <=  0)       price_display = "Free";
                                         return (
@@ -196,7 +195,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                     {props.page_wraps.map((wrap_data, wrap_index) => (
                                         <Link href={`/${wrap_data.type}/${wrap_data.id}`} key={wrap_index}>
                                             <div>
-                                                <Image src={`/api/assets/${wrap_data.type}/${wrap_data.id}`} alt={wrap_data.name} fill style={{backgroundColor: color_currency(wrap_data, props.page_currencies)}}/>
+                                                <Image src={`/api/assets/${wrap_data.type}/${wrap_data.id}`} alt={wrap_data.name} fill style={{backgroundColor: price_color(wrap_data, props.page_currencies)}}/>
                                             </div>
                                             <h5>
                                                 <span>{wrap_data.name}</span>
@@ -289,24 +288,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // find markup
     const page_markup = (await get_markup_all_cached()).result.find(markup_data => (markup_data.id === page_id));
     // find prices
-    const converter_number = new Intl.NumberFormat("en-US");
-    const page_prices      = page_asset.price.map(price_data => {
+    const page_prices = page_asset.price.map(price_data => {
         if (price_data.currency === CurrencyType.QUEST) return price_data.source;
         if (price_data.amount   <=  0)                  return price_data.source;
-        return `${converter_number.format(price_data.amount)} ${price_data.currency} in ${price_data.source}`;
+        return `${number_print(price_data.amount, 2, NumberFormatType.ABBREVIATION)} ${price_data.currency} in ${price_data.source}`;
     });
-    // generate pronouns
-    const page_pronouns_list = ["It", `The ${page_group.name.slice(0, -1).toLowerCase()}`, "It", `The ${page_group.name.slice(0, -1).toLowerCase()}`];
+    // generate description
     let   page_pronouns_next = 0;
+    const page_pronouns_list = ["It", `The ${page_group.name.slice(0, -1).toLowerCase()}`, "It", `The ${page_group.name.slice(0, -1).toLowerCase()}`];
+    const page_description   = [
+        `The ${page_asset.name} is one of the ${page_group.name.toLowerCase()} in Flagwars.`,
+        ((page_asset.alias.length > 0) ? `${page_pronouns_list[page_pronouns_next++]} was also referred to as ${string_join(page_asset.alias, "or")}.`                         : undefined),
+        ((page_prices.length      > 0) ? `${page_pronouns_list[page_pronouns_next++]} was obtainable for ${string_join(page_prices)}.`                                         : undefined),
+        ((page_wraps.length       > 0) ? `${page_pronouns_list[page_pronouns_next++]} has ${page_wraps.length} wraps in total such as the ${string_join(page_wraps_minimal)}.` : undefined),
+        `Check ${page_pronouns_list[page_pronouns_next++].toLowerCase()} out right now on Flagwars Wiki.`
+    ].filter(sentence_string => (sentence_string !== undefined)).join(" ");
 	return {props: {
 		page_name:        page_asset.name,
-		page_description: [
-            `The ${page_asset.name} is one of the ${page_group.name.toLowerCase()} in Flagwars.`,
-            ((page_asset.alias.length > 0) ? `${page_pronouns_list[page_pronouns_next++]} was also referred to as ${string_join(page_asset.alias, "or")}.`                         : undefined),
-            ((page_prices.length      > 0) ? `${page_pronouns_list[page_pronouns_next++]} was obtainable for ${string_join(page_prices)}.`                                         : undefined),
-            ((page_wraps.length       > 0) ? `${page_pronouns_list[page_pronouns_next++]} has ${page_wraps.length} wraps in total such as the ${string_join(page_wraps_minimal)}.` : undefined),
-            `Check ${page_pronouns_list[page_pronouns_next++].toLowerCase()} out right now on Flagwars Wiki.`
-        ].filter(sentence_string => (sentence_string !== undefined)).join(" "),
+		page_description: page_description,
         page_image:       `/api/assets/${page_asset.type}/${page_asset.id}?format=fixed`,
 		page_pathname:    `/${page_asset.type}/${page_asset.id}`,
 		// local props
@@ -316,7 +315,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         page_related:     page_related_text,
         page_neighbor:    asset_beside(server_assets, page_id),
         page_currencies:  (await get_currencies_cached()).result,
-		page_markup:      (page_markup?.content ?? markup_template(page_asset, page_wraps, page_group))
+		page_markup:      (page_markup?.content ?? `# Overview\n\n${page_description}`)
 	} as CatalogItemProps};
 };
 
