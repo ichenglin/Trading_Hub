@@ -36,7 +36,7 @@ const Profile: NextPageLayout<ProfileProps> = (props) => {
         const session_cookie = cookie_parse(document.cookie);
         const session_role   = session_cookie.SESSION_ROLE;
         set_role(session_role);
-    });
+    }, []);
 
     const copy_link = async () => {
         await navigator.clipboard.writeText(new URL(props.page_pathname, window.location.origin).toString());
@@ -155,7 +155,7 @@ const Profile: NextPageLayout<ProfileProps> = (props) => {
                             <FontAwesomeIcon icon={faPenNib}/>
                         </div>
                         <div>
-                            <p><b>{props.page_user.user_name}</b>'s update to <b>Black Hole Gun</b> was approved 2 days ago</p>
+                            <p><b>{props.page_user.user_name}</b>&apos;s update to <b>Black Hole Gun</b> was approved 2 days ago</p>
                         </div>
                     </div>
                     <div className={styles.event} style={{backgroundColor: "#f87171"}}>
@@ -164,7 +164,7 @@ const Profile: NextPageLayout<ProfileProps> = (props) => {
                             <FontAwesomeIcon icon={faCircleXmark}/>
                         </div>
                         <div>
-                            <p><b>{props.page_user.user_name}</b>'s update to <b>Black Hole Gun</b> was rejected 2 days ago</p>
+                            <p><b>{props.page_user.user_name}</b>&apos;s update to <b>Black Hole Gun</b> was rejected 2 days ago</p>
                         </div>
                     </div>
                     <div className={styles.event} style={{backgroundColor: "#c084fc"}}>
