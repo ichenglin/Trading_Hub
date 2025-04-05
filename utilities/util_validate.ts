@@ -1,5 +1,9 @@
 import { AssetType } from "./util_asset";
-import { get_assets, get_assets_cached } from "./util_database";
+import { get_assets_cached } from "./util_database";
+
+export function validate_boolean(request_boolean: (boolean | undefined | null)): boolean {
+    return ((typeof request_boolean) === "boolean");
+}
 
 export function validate_string(request_string: (string | undefined | null)): boolean {
     const string_type   = ((typeof request_string) === "string");

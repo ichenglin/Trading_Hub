@@ -7,6 +7,9 @@ const nextConfig = {
 	poweredByHeader: false,
 	serverRuntimeConfig: {
 		PROJECT_ROOT: __dirname
+	},
+	images: {
+		domains: ["cdn.discordapp.com"]
 	}
 };
 

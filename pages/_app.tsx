@@ -5,6 +5,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import PageHeader from "@/components/page_header";
 import PageFooter from "@/components/page_footer";
+import PageAlert from "@/components/page_alert";
+import ContextPage from "@/contexts/context_page";
 
 // fonts
 import { Inter } from "next/font/google";
@@ -60,11 +62,14 @@ export default function App({ Component, pageProps }: AppPropsLayout) {
 			<link rel="manifest"            href="/manifest.json" crossOrigin="use-credentials"/>
 			<link rel="canonical"           href={page_fallback.page_pathname}/>
 		</Head>
-		<PageHeader/>
-		<main className={font_inter.className}>
-			{page_layout(<Component {...pageProps} />)}
-		</main>
-		<PageFooter/>
+		<ContextPage>
+			<PageHeader/>
+			<PageAlert/>
+			<main className={font_inter.className}>
+				{page_layout(<Component {...pageProps} />)}
+			</main>
+			<PageFooter/>
+		</ContextPage>
 	</>;
 }
 

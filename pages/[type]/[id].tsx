@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,10 +10,11 @@ import { Asset, AssetGroup, AssetType, CurrencyConverter, CurrencyType, get_cate
 import styles from "@/styles/pages/CatalogItem.module.css";
 import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
 import { get_currencies_cached } from "../api/currencies";
-import { asset_beside, asset_related, AssetNeighbor, number_print, NumberFormatType, price_color, string_join } from "@/utilities/util_render";
+import { asset_beside, asset_related, AssetNeighbor, date_day, number_print, NumberFormatType, price_color, string_join } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
 import ObjectMarkdownEditor from "@/components/object_editor_markdown";
 import { cookie_parse } from "@/utilities/util_cookie";
+import { context_alert, ContextAlertType } from "@/contexts/context_page";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,12 +34,14 @@ interface CatalogItemProps {
     page_related:    string,
     page_neighbor:   AssetNeighbor,
     page_currencies: CurrencyConverter,
-    page_markup:     string
+    page_markup:     string,
+    page_updated:    string
 };
 
 const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const [page_edit, set_edit] = useState({editing: false, status: CatalogItemEditStatus.NONE});
     const [page_text, set_text] = useState("");
+    const page_alert            = useContext(context_alert);
     const page_router           = useRouter();
     const page_url              = `/${props.page_asset.type}/${props.page_asset.id}`;
     const asset_wraps           = props.page_wraps.slice(0, Math.min(props.page_wraps.length, 4));
@@ -48,8 +51,13 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
         set_text(props.page_markup);
     }, [props.page_markup])
 
+    const page_bookmark_request = async () => {
+        page_alert.add(ContextAlertType.WARNING, "Bookmark is currently Disabled");
+    }
+
     const page_copy_request = async () => {
-        await navigator.clipboard.writeText(new URL(page_url, window.location.origin).toString())
+        await navigator.clipboard.writeText(new URL(page_url, window.location.origin).toString());
+        page_alert.add(ContextAlertType.SUCCESS, "Successfully Copied Link to Clipboard");
     }
 
     const page_edit_request = () => {
@@ -73,8 +81,13 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                 page_markup:   page_text
             })
         }).then(response => response.json());
-        const submit_status = (submit_result.success ? CatalogItemEditStatus.SUCCESS : CatalogItemEditStatus.FAILED);
-        set_edit({...page_edit, status: submit_status});
+        if (submit_result.success) {
+            page_alert.add(ContextAlertType.SUCCESS, `Successfully Updated ${props.page_asset.name}`);
+            set_edit({...page_edit, status: CatalogItemEditStatus.SUCCESS});
+        } else {
+            page_alert.add(ContextAlertType.FAILURE, `Update to ${props.page_asset.name} was Rejected`);
+            set_edit({...page_edit, status: CatalogItemEditStatus.FAILED});
+        }
     }
 
     return (
@@ -172,7 +185,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                 </div>
                             </div>
                             <div className={styles.options}>
-                                <span><b>Last Updated:</b> 2025/03/22</span>
+                                <span><b>Last Updated:</b> {props.page_updated}</span>
                                 <span className={styles.tree}>
                                     <span>Catalog</span>
                                     <span><Link href={`/${props.page_asset.type}`}>{props.page_group}</Link></span>
@@ -208,7 +221,7 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                             <ObjectMarkdownViewer source={props.page_related} margin={false}/>
                             <div className={styles.toolbox}>
                                 <div>
-                                    <button style={{backgroundColor: "#f59e0b"}}>
+                                    <button style={{backgroundColor: "#f59e0b"}} onClick={page_bookmark_request}>
                                         <FontAwesomeIcon icon={faStar}/>
                                         <span>Bookmark</span>
                                     </button>
@@ -315,7 +328,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         page_related:     page_related_text,
         page_neighbor:    asset_beside(server_assets, page_id),
         page_currencies:  (await get_currencies_cached()).result,
-		page_markup:      (page_markup?.content ?? `# Overview\n\n${page_description}`)
+		page_markup:      (page_markup?.content ?? `# Overview\n\n${page_description}`),
+        page_updated:     ((page_markup?.updated !== undefined) ? date_day(new Date(page_markup.updated)) : "Unknown")
 	} as CatalogItemProps};
 };
 

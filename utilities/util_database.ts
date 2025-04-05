@@ -7,6 +7,7 @@ import { APIContent, get_cache, remove_cache } from "./util_cache";
 
 export enum DatabaseUserRole {
     ADMIN  = "admin",
+    MOD    = "mod",
     MEMBER = "member"
 };
 
@@ -22,7 +23,8 @@ const DatabaseUserSchema = new Backend.server_database.Schema({
     id:       {type: String,                required: true, unique: true},
     username: {type: String,                required: true},
     role:     {type: String,                required: true, enum: Object.values(DatabaseUserRole), default: DatabaseUserRole.MEMBER},
-    discord:  {type: DatabaseDiscordSchema, required: true}
+    discord:  {type: DatabaseDiscordSchema, required: true},
+    suspend:  {type: String}
 });
 
 export const DatabaseUserModel = Backend.server_database.models.users || Backend.server_database.model("users", DatabaseUserSchema);
@@ -87,7 +89,7 @@ const DatabaseMarkupSchema = new Backend.server_database.Schema({
 
 const DatabaseMarkupModel = Backend.server_database.models.markups || Backend.server_database.model("markups", DatabaseMarkupSchema);
 interface DatabaseMarkup extends Omit<InferSchemaType<typeof DatabaseMarkupSchema>, "updated"> {
-    updated: Date
+    updated: string // Date type omitted after json serialize
 }
 
 export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser | null> {
@@ -102,7 +104,8 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
                 email:    discord_user.email,
                 locale:   discord_user.locale,
                 avatar:   discord_user.avatar
-            }
+            },
+            suspend: null
         }, $setOnInsert: {
             id: Crypto.randomUUID()
         }}, {
@@ -114,6 +117,25 @@ export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser 
         if ((error as any).code !== 11000) return null;
     }
     return null;
+}
+
+export async function update_user(user_id: string, user_update: object): Promise<DatabaseUser | null> {
+    return get_serialized(await DatabaseUserModel.findOneAndUpdate({
+        id: user_id
+    }, {$set: user_update}, {
+        new:    true,
+        projection: {_id: 0, __v: 0, "discord._id": 0}
+    }));
+}
+
+export async function get_user(user_id: string): Promise<DatabaseUser | null> {
+    return get_serialized(await DatabaseUserModel.findOne({
+        id: user_id
+    }, undefined, {projection: {_id: 0, __v: 0, "discord._id": 0}}));
+}
+
+export async function get_user_all(): Promise<DatabaseUser[]> {
+    return get_serialized(await DatabaseUserModel.find({}, undefined, {projection: {_id: 0, __v: 0, "discord._id": 0}}));
 }
 
 export async function get_assets(asset_type: AssetType): Promise<Asset[]> {

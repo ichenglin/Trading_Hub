@@ -29,23 +29,33 @@ export async function remove_cache(cache_key: string): Promise<boolean> {
 
 export async function get_session(session_id: string, session_invalidate: boolean = false): Promise<DatabaseUser | null> {
     // TODO: refresh session expiration
-    const session_data  = await Backend.server_cache.get(`SESSION_${session_id}`);
-    const session_exist = (session_data !== null);
-    if (session_exist && session_invalidate) await Backend.server_cache.del(`SESSION_${session_id}`);
-    return (session_exist ? JSON.parse(session_data) : null);
+    const session_raw   = await Backend.server_cache.get(`SESSION_DATA_${session_id}`);
+    const session_exist = (session_raw !== null);
+    const session_data  = (session_exist ? JSON.parse(session_raw) : null) as DatabaseUser;
+    if (session_exist && session_invalidate) await Backend.server_cache.del(`SESSION_DATA_${session_id}`);
+    if (session_exist && session_invalidate) await Backend.server_cache.del(`SESSION_USER_${session_data.id}`);
+    return session_data;
+}
+
+export async function get_session_id(user_id: string): Promise<string | null> {
+    return await Backend.server_cache.get(`SESSION_USER_${user_id}`);
 }
 
 export async function set_session(session_user: DatabaseUser, session_lifespan: number = Backend.server_env.get_number("REDIS_SESSION_LIFESPAN")): Promise<UserSession> {
-    // generate new session id
-    let session_id = (null as unknown as string);
-    while (true) {
+    // check if user session exist
+    const session_old   = (await get_session_id(session_user.id)) as string;
+    const session_exist = (session_old !== null);
+    // generate new session id if needed
+    let session_id = session_old;
+    if (!session_exist) while (true) {
         const session_valid     = (session_id !== null);
         const session_available = (session_valid && ((await Backend.server_cache.get(`SESSION_${session_id}`)) === null));
         if (session_valid && session_available) break;
         session_id = Crypto.randomBytes(32).toString("hex").normalize();
     }
     // save session id
-    await Backend.server_cache.setEx(`SESSION_${session_id}`, session_lifespan, JSON.stringify(session_user));
+    await Backend.server_cache.setEx(`SESSION_DATA_${session_id}`,      session_lifespan, JSON.stringify(session_user));
+    await Backend.server_cache.setEx(`SESSION_USER_${session_user.id}`, session_lifespan, (session_id as string));
     return {
         session_id:       session_id,
         session_lifespan: session_lifespan,

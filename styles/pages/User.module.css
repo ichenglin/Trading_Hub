@@ -1,0 +1,122 @@
+.container {
+    padding: 30px;
+    width: 100%;
+    height: calc(100svh - 140px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4e5355;
+}
+
+.profile {
+    padding: 30px;
+    width: 65ch;
+    height: 100%;
+    display: grid;
+    grid-template: 200px 60px auto / 200px auto;
+    gap: 10px;
+    border-radius: 10px;
+    background-color: #434749;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    grid-area: 1 / 1 / 2 / 2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.avatar > img {
+    background-color: #4e5355;
+}
+
+.name {
+    grid-area: 2 / 1 / 3 / 2;
+    text-align: center;
+    color: #ffffff;
+}
+
+.name > h1 {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 600;
+}
+
+.name > h5 {
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.actions {
+    grid-area: 3 / 1 / 4 / 2;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.actions > button {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+.actions > button:hover {
+    filter: brightness(95%);
+}
+
+.actions > button:active {
+    filter: brightness(85%);
+}
+
+.activity {
+    grid-area: 1 / 2 / 4 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event {
+    display: grid;
+    grid-template: 25px 75px / 75px auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.event > h3 {
+    grid-area: 1 / 1 / 2 / 3;
+    text-align: center;
+    font-weight: 600;
+}
+
+.event > div:nth-child(2) {
+    grid-area: 2 / 1 / 3 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff68;
+    color: #ffffff;
+}
+
+.event > div:nth-child(2) > svg {
+    width: 40px;
+    height: 40px;
+}
+
+.event > div:nth-child(3) {
+    padding: 5px;
+    grid-area: 2 / 2 / 3 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    background-color: #ffffff;
+}

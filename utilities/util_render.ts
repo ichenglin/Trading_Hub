@@ -30,6 +30,14 @@ export function number_print(number_value: number, number_digits: number, number
     return `${number_significant}${number_unit[number_type]}`;
 }
 
+export function string_capitalize(string_data: string): string {
+    const string_words = string_data.split(/\s/);
+    return string_words.map(string_word => {
+        if (string_word.length <= 0) return string_word;
+        return `${string_word.at(0)?.toUpperCase()}${string_word.slice(1).toLowerCase()}`;
+    }).join(" ");
+}
+
 export function string_join(string_list: string[], string_delimiter: ("and" | "or") = "and"): string {
     if      (string_list.length <=  0) return "";
     else if (string_list.length === 1) return string_list[0];
@@ -49,6 +57,10 @@ export function string_match(string_a: string, string_b: string): number {
         words_common++;
     }
     return words_common;
+}
+
+export function date_day(date_data: Date): string {
+    return date_data.toLocaleDateString("en-US", {timeZone: "UTC"});
 }
 
 export function asset_beside(asset_list: Asset[], asset_id: string): AssetNeighbor {
