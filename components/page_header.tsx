@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,19 +14,16 @@ import { Inter, Bungee } from "next/font/google";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBars, faXmark, faRankingStar, faShuffle, faSquareRootVariable, faToolbox } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import { cookie_parse, CookieStorage } from "@/utilities/util_cookie";
+import { context_auth } from "@/contexts/context_page";
 
 const font_bungee = Bungee({subsets: ["latin"], weight: "400"});
 const font_inter  = Inter({subsets: ["latin"]});
 
 const PageHeader: NextPageLayout = () => {
 
-	const [cookie, set_cookie] = useState({} as CookieStorage);
-	const router = useRouter();
-
-	useEffect(() => {
-		set_cookie(cookie_parse(document.cookie));
-	}, []);
+	const page_auth   = useContext(context_auth);
+	const page_router = useRouter();
+	const page_user   = page_auth.get();
 
 	const dropdown_toggle = () => {
 		const header_element  = document.getElementsByClassName(styles.header)[0];
@@ -36,7 +33,7 @@ const PageHeader: NextPageLayout = () => {
 
 	return (
 		<header className={`${styles.header} ${font_inter.className}`}>
-			<Link className={`${styles.icon} ${font_bungee.className}`} href="/" onClick={(event: any) => silent_scroll(event, "/", "#cover", router)}>
+			<Link className={`${styles.icon} ${font_bungee.className}`} href="/" onClick={(event: any) => silent_scroll(event, "/", "#cover", page_router)}>
 				<Image src={icon_image} width="192" height="192" alt="Icon"/>
 				<h1>Flagwars Wiki</h1>
 			</Link>
@@ -67,9 +64,9 @@ const PageHeader: NextPageLayout = () => {
 				<FontAwesomeIcon className={styles.active} icon={faXmark} width="14" height="14"/>
 				<span>Links</span>
 			</button>
-			<Link className={styles.contact} href={(cookie.SESSION_USER !== undefined) ? `/profile/${cookie.SESSION_USER}` : "/login"}>
+			<Link className={styles.contact} href={page_user.auth_success ? `/profile/${page_user.auth_id}` : "/login"}>
 				<FontAwesomeIcon icon={faDiscord} width="14" height="14"/>
-				<span>{cookie.SESSION_NAME ?? "Login with Discord"}</span>
+				<span>{page_user.auth_success ? page_user.auth_name : "Login with Discord"}</span>
 			</Link>
 		</header>
 	);

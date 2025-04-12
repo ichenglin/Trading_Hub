@@ -1,6 +1,9 @@
 import { URL, URLSearchParams } from "url";
 import Backend from "@/backend";
 import { validate_string } from "./util_validate";
+import { NextApiResponse } from "next";
+import { DatabaseUser } from "./util_database";
+import { UserSession } from "./util_cache";
 
 const DISCORD_SCOPES = [
     "identify",
@@ -59,6 +62,18 @@ export async function get_auth_info(auth_token: DiscordToken): Promise<DiscordUs
         locale:   auth_info.locale,
         avatar:   auth_info.avatar
     } as DiscordUser;
+}
+
+export function set_auth_cookie(api_response: NextApiResponse, auth_user: DatabaseUser, auth_session: UserSession): NextApiResponse {
+    return api_response.setHeader("Set-Cookie", [
+        `SESSION_ID=${auth_session.session_id}; Path=/; HttpOnly; Secure; SameSite=Lax; Expires=${auth_session.session_expire.toUTCString()}`
+    ]);
+}
+
+export function remove_auth_cookie(api_response: NextApiResponse): NextApiResponse {
+    return api_response.setHeader("Set-Cookie", [
+        `SESSION_ID=deleted;   Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`
+    ]);
 }
 
 export interface DiscordToken {

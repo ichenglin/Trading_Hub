@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { validate_string } from "@/utilities/util_validate";
 import { get_error, get_session } from "@/utilities/util_cache";
+import { remove_auth_cookie } from "@/utilities/util_auth";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     // check request method
@@ -18,11 +19,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
     // invalidate session
     await get_session(session_id as string, true);
     // remove cookies
-    response.status(307).setHeader("Set-Cookie", [
-        // ID, name, and role are for PUBLIC, not used for verification
-        `SESSION_ID=deleted;   Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-        `SESSION_USER=deleted; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-        `SESSION_NAME=deleted; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-        `SESSION_ROLE=deleted; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`
-    ]).redirect("/");
+    remove_auth_cookie(response).status(307).redirect("/");
 }

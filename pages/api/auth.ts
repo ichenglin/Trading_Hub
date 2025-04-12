@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { get_auth_info, get_auth_token } from "@/utilities/util_auth";
+import { get_auth_info, get_auth_token, set_auth_cookie } from "@/utilities/util_auth";
 import { set_session } from "@/utilities/util_cache";
 import { set_user } from "@/utilities/util_database";
 import { validate_string } from "@/utilities/util_validate";
@@ -32,12 +32,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
     }
     // create session
     const auth_session = await set_session(auth_user);
-    //response.cookies.set("SESSION", auth_session);
-    response.status(307).setHeader("Set-Cookie", [
-        // ID, name, and role are for PUBLIC, not used for verification
-        `SESSION_ID=${auth_session.session_id}; Path=/; HttpOnly; Secure; SameSite=Lax; Expires=${auth_session.session_expire.toUTCString()}`,
-        `SESSION_USER=${auth_user.id};          Path=/;           Secure; SameSite=Lax; Expires=${auth_session.session_expire.toUTCString()}`,
-        `SESSION_NAME=${auth_user.username};    Path=/;           Secure; SameSite=Lax; Expires=${auth_session.session_expire.toUTCString()}`,
-        `SESSION_ROLE=${auth_user.role};        Path=/;           Secure; SameSite=Lax; Expires=${auth_session.session_expire.toUTCString()}`
-    ]).redirect("/");
+    set_auth_cookie(response, auth_user, auth_session).status(307).redirect("/");
 }

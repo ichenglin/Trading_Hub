@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { get_auth_base } from "@/utilities/util_auth";
 import type { NextPageLayout } from "./_app";
 import styles from "@/styles/pages/Login.module.css";
 import icon_image from "../public/android-chrome-512x512.png";
-import { cookie_parse } from "@/utilities/util_cookie";
+import { context_auth } from "@/contexts/context_page";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,11 +18,12 @@ interface LoginProps {
 }
 
 const Login: NextPageLayout<LoginProps> = (props) => {
-    const page_router = useRouter();
+    const page_auth   = useContext(context_auth);
+	const page_router = useRouter();
+	const page_user   = page_auth.get();
 
     useEffect(() => {
-        const session_cookie = cookie_parse(document.cookie);
-        if (session_cookie.SESSION_USER !== undefined) page_router.push("/");
+        if (page_user.auth_success) page_router.push("/");
     });
 
     return (

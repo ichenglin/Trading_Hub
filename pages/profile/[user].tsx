@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import type { NextPageLayout } from "../_app";
 import styles from "@/styles/pages/User.module.css";
-import { cookie_parse } from "@/utilities/util_cookie";
 import { DatabaseUser, get_user, get_user_all } from "@/utilities/util_database";
 import { string_capitalize } from "@/utilities/util_render";
 import icon_image from "../../public/android-chrome-512x512.png";
@@ -12,7 +11,7 @@ import icon_image from "../../public/android-chrome-512x512.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft, faBan, faCakeCandles, faCircleXmark, faComment, faCopy, faMedal, faPenNib, faTag, faUserPen, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { context_alert, ContextAlertType } from "@/contexts/context_page";
+import { context_alert, context_auth, ContextAlertType } from "@/contexts/context_page";
 
 interface ProfileUser {
     user_id:      string
@@ -28,15 +27,10 @@ interface ProfileProps {
 }
 
 const Profile: NextPageLayout<ProfileProps> = (props) => {
-    const [viewer_role, set_role] = useState("member");
-    const page_alert              = useContext(context_alert);
-    const page_router             = useRouter();
-
-    useEffect(() => {
-        const session_cookie = cookie_parse(document.cookie);
-        const session_role   = session_cookie.SESSION_ROLE;
-        set_role(session_role);
-    }, []);
+    const page_alert  = useContext(context_alert);
+    const page_auth   = useContext(context_auth);
+    const page_router = useRouter();
+    const page_user   = page_auth.get();
 
     const copy_link = async () => {
         await navigator.clipboard.writeText(new URL(props.page_pathname, window.location.origin).toString());
@@ -110,7 +104,7 @@ const Profile: NextPageLayout<ProfileProps> = (props) => {
                         <FontAwesomeIcon icon={faUserPlus}/>
                         <span>Add Friend</span>
                     </button>
-                    {(viewer_role === "admin") && (<>
+                    {(page_user.auth_success && page_user.auth_role === "admin") && (<>
                         <button style={{backgroundColor: "#fbbf24"}} onClick={update_role}>
                             <FontAwesomeIcon icon={faTag}/>
                             <span>Update Role</span>

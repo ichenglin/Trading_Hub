@@ -13,8 +13,7 @@ import { get_currencies_cached } from "../api/currencies";
 import { asset_beside, asset_related, AssetNeighbor, date_day, number_print, NumberFormatType, price_color, string_join } from "@/utilities/util_render";
 import silent_scroll from "@/utilities/util_scroll";
 import ObjectMarkdownEditor from "@/components/object_editor_markdown";
-import { cookie_parse } from "@/utilities/util_cookie";
-import { context_alert, ContextAlertType } from "@/contexts/context_page";
+import { context_alert, context_auth, ContextAlertType } from "@/contexts/context_page";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,7 +41,9 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const [page_edit, set_edit] = useState({editing: false, status: CatalogItemEditStatus.NONE});
     const [page_text, set_text] = useState("");
     const page_alert            = useContext(context_alert);
+    const page_auth             = useContext(context_auth);
     const page_router           = useRouter();
+    const page_user             = page_auth.get();
     const page_url              = `/${props.page_asset.type}/${props.page_asset.id}`;
     const asset_wraps           = props.page_wraps.slice(0, Math.min(props.page_wraps.length, 4));
     const asset_wraps_more      = Math.max((props.page_wraps.length - 4), 0);
@@ -65,10 +66,8 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
             set_edit({...page_edit, editing: false});
             return;
         }
-        const page_cookie  = cookie_parse(document.cookie);
-        const page_session = page_cookie.SESSION_USER;
-        if (page_session === undefined) return page_router.push("/login");
-        set_edit({...page_edit, editing: true});
+        if (!page_user.auth_success) return page_router.push("/login");
+        else                         set_edit({...page_edit, editing: true});
     }
 
     const page_submit_request = async () => {
