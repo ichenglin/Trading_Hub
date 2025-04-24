@@ -17,7 +17,7 @@ const PageFooter: NextPageLayout = () => {
 	return (
 		<footer className={`${styles.footer} ${font_inter.className}`}>
 			<div className={styles.copyright}>
-				<p><b>© 2025 Flagwars Wiki. All Rights Reserved.</b></p>
+				<p><b>© 2025 Flagwars Trading. All Rights Reserved.</b></p>
 				<p>The site is not affiliated with Flagwars or Scriptly Studios</p>
 			</div>
 			<div className={styles.navbar}>

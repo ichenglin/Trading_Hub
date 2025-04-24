@@ -167,7 +167,7 @@ const Profile: NextPageLayout<ProfileProps> = (props) => {
                             <FontAwesomeIcon icon={faCakeCandles}/>
                         </div>
                         <div>
-                            <p><b>{props.page_user.user_name}</b> joined <b>Flagwars Wiki</b> 3 days ago</p>
+                            <p><b>{props.page_user.user_name}</b> joined <b>Flagwars Trading</b> 3 days ago</p>
                         </div>
                     </div>
                 </div>

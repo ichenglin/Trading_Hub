@@ -35,7 +35,7 @@ const PageHeader: NextPageLayout = () => {
 		<header className={`${styles.header} ${font_inter.className}`}>
 			<Link className={`${styles.icon} ${font_bungee.className}`} href="/" onClick={(event: any) => silent_scroll(event, "/", "#cover", page_router)}>
 				<Image src={icon_image} width="192" height="192" alt="Icon"/>
-				<h1>Flagwars Wiki</h1>
+				<h1>Flagwars Trading</h1>
 			</Link>
 			<nav className={styles.navbar}>
 				<Link className={styles.item} href="/weapons">

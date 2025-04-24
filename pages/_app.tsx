@@ -41,15 +41,22 @@ export default function App({ Component, pageProps }: AppPropsLayout) {
 		page_pathname:    prop_default(pageProps.page_pathname    as string, undefined,                                               (page_pathname) => `${data_links.link_website}${page_pathname}`),
 		page_robots:      prop_default(pageProps.page_robots      as string, "all")
 	};
+	const page_properties = {
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": "Flagwars Trading",
+		"alternateName": ["Flagwars Values", "Flagwars Trading Values", "FW Trading", "Flagwars Values", "FW Trading Values"],
+		"url": "https://flagwars.net/"
+	};
 	return <>
 		<Head>
 			<meta charSet="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-			<title>{`${page_fallback.page_name} • Flagwars Wiki`}</title>
+			<title>{`${page_fallback.page_name} • Flagwars Trading`}</title>
 
-			<meta property="og:site_name"   content="Flagwars Wiki"/>
-			<meta property="og:title"       content={`${page_fallback.page_name} • Flagwars Wiki`}/>
+			<meta property="og:site_name"   content="Flagwars Trading"/>
+			<meta property="og:title"       content={`${page_fallback.page_name} • Flagwars Trading`}/>
 			<meta property="og:image"       content={page_fallback.page_image}/>
 			<meta property="og:description" content={page_fallback.page_description}/>
 			<meta property="og:url"         content={page_fallback.page_pathname}/>
@@ -61,6 +68,8 @@ export default function App({ Component, pageProps }: AppPropsLayout) {
 			<link rel="apple-touch-icon"    href="/logo192.png"   crossOrigin="use-credentials"/>
 			<link rel="manifest"            href="/manifest.json" crossOrigin="use-credentials"/>
 			<link rel="canonical"           href={page_fallback.page_pathname}/>
+		
+			<script type="application/ld+json">{JSON.stringify(page_properties)}</script>
 		</Head>
 		<ContextPage>
 			<PageHeader/>

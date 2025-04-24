@@ -25,7 +25,7 @@ const About: NextPageLayout = () => {
 			<section className={`${styles.cover} ${font_jetbrains.className}`}>
 				<Image src="/images/banner.png" alt="Banner" width="1920" height="900"/>
 				<div className={styles.intro}>
-					<h1>Flagwars Wiki</h1>
+					<h1>Flagwars Trading</h1>
 					<h3>One-Stop Source for All Things FlagWars</h3>
 				</div>
 				<div className={styles.navbar}>
@@ -54,7 +54,7 @@ const About: NextPageLayout = () => {
 export const getStaticProps: GetStaticProps = async (context) => {
 	return {props: {
 		page_name:        "About",
-		page_description: "Welcome to the FlagWars Wiki, your one-stop list for exclusive weapons, gadgets, and cosmetics!",
+		page_description: "Welcome to Flagwars Trading, your one-stop list for exclusive weapons, gadgets, and cosmetics!",
 		page_pathname:    "/"
 	}};
 }

@@ -313,7 +313,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         ((page_asset.alias.length > 0) ? `${page_pronouns_list[page_pronouns_next++]} was also referred to as ${string_join(page_asset.alias, "or")}.`                         : undefined),
         ((page_prices.length      > 0) ? `${page_pronouns_list[page_pronouns_next++]} was obtainable for ${string_join(page_prices)}.`                                         : undefined),
         ((page_wraps.length       > 0) ? `${page_pronouns_list[page_pronouns_next++]} has ${page_wraps.length} wraps in total such as the ${string_join(page_wraps_minimal)}.` : undefined),
-        `Check ${page_pronouns_list[page_pronouns_next++].toLowerCase()} out right now on Flagwars Wiki.`
+        `Check ${page_pronouns_list[page_pronouns_next++].toLowerCase()} out right now on Flagwars Trading.`
     ].filter(sentence_string => (sentence_string !== undefined)).join(" ");
 	return {props: {
 		page_name:        page_asset.name,

@@ -199,7 +199,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     if (group_data === undefined) return {props: {}};
 	return {props: {
 		page_name:        group_data.name,
-		page_description: "Welcome to the FlagWars Wiki Item Catalog, your one-stop list for exclusive weapons, gadgets, and cosmetics!",
+		page_description: "Welcome to FlagWars Trading item catalog, your one-stop list for exclusive weapons, gadgets, and cosmetics!",
 		page_pathname:    group_data.id,
         // local props
         page_group:       group_data
