@@ -12,9 +12,12 @@ import { Inter, Bungee } from "next/font/google";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars, faXmark, faRankingStar, faShuffle, faSquareRootVariable, faToolbox } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBars, faXmark, faShuffle, faSquareRootVariable, faLock } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { context_auth } from "@/contexts/context_page";
+
+// data
+import data_links from "@/data/data_links.json";
 
 const font_bungee = Bungee({subsets: ["latin"], weight: "400"});
 const font_inter  = Inter({subsets: ["latin"]});
@@ -46,17 +49,13 @@ const PageHeader: NextPageLayout = () => {
 					<FontAwesomeIcon icon={faSquareRootVariable} width="14" height="14"/>
 					<span>Calculator</span>
 				</Link>
-				<Link className={styles.item} href="/random">
-					<FontAwesomeIcon icon={faShuffle} width="14" height="14"/>
-					<span>Random</span>
-				</Link>
 				<Link className={styles.item} href="/loadout">
-					<FontAwesomeIcon icon={faToolbox} width="14" height="14"/>
+					<FontAwesomeIcon icon={faShuffle} width="14" height="14"/>
 					<span>Loadout</span>
 				</Link>
-				<Link className={styles.item} href="/rankings">
-					<FontAwesomeIcon icon={faRankingStar} width="14" height="14"/>
-					<span>Rankings</span>
+				<Link className={styles.item} href={data_links.link_private}>
+					<FontAwesomeIcon icon={faLock} width="14" height="14"/>
+					<span>Private Server</span>
 				</Link>
 			</nav>
 			<button className={styles.dropdown} onClick={dropdown_toggle}>
