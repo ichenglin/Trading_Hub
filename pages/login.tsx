@@ -6,7 +6,7 @@ import Image from "next/image";
 import { get_auth_base } from "@/utilities/util_auth";
 import type { NextPageLayout } from "./_app";
 import styles from "@/styles/pages/Login.module.css";
-import icon_image from "../public/android-chrome-512x512.png";
+import icon_image from "@/public/android-chrome-512x512.png";
 import { context_auth } from "@/contexts/context_page";
 
 // icons
@@ -29,7 +29,7 @@ const Login: NextPageLayout<LoginProps> = (props) => {
     return (
         <section className={styles.container}>
             <div className={styles.card}>
-                <Image src={icon_image} width="512" height="512" alt="Icon"/>
+                <Image src={icon_image} alt="Icon"/>
                 <h1>User Login</h1>
                 <h3>Register and login with your discord account grants you access to <b>page editing</b> and <b>user features</b></h3>
                 <Link href={props.login_discord}>

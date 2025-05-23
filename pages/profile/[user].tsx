@@ -5,7 +5,7 @@ import type { NextPageLayout } from "../_app";
 import styles from "@/styles/pages/User.module.css";
 import { DatabaseUser, get_user, get_user_all } from "@/utilities/util_database";
 import { string_capitalize } from "@/utilities/util_render";
-import icon_image from "../../public/android-chrome-512x512.png";
+import icon_image from "@/public/android-chrome-512x512.png";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -5,6 +5,7 @@ import type { NextPageLayout } from "./_app";
 import styles from "@/styles/pages/About.module.css";
 import ObjectDivider, { ObjectDividerType } from "@/components/object_divider";
 import ObjectReference from "@/components/object_reference";
+import banner_image from "@/public/images/banner.png";
 
 // fonts
 import { Dosis, JetBrains_Mono } from "next/font/google";
@@ -23,7 +24,7 @@ const About: NextPageLayout = () => {
 		<>
 			<span className="header_offset" id="cover"/>
 			<section className={`${styles.cover} ${font_jetbrains.className}`}>
-				<Image src="/images/banner.png" alt="Banner" width="1920" height="900"/>
+				<Image src={banner_image} alt="Banner"/>
 				<div className={styles.intro}>
 					<h1>Flagwars Trading</h1>
 					<h3>One-Stop Source for All Things FlagWars</h3>
