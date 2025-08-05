@@ -29,6 +29,11 @@ export async function validate_id(request_id: (string | undefined | null)): Prom
     return (id_type && id_exist);
 }
 
+export async function validate_asset(request_id: (string | undefined | null), request_type: (string | undefined | null)): Promise<boolean> {
+    const item_all = await get_assets_cached(AssetType.ALL);
+    return (item_all.result.find(loop_item => ((loop_item.id === request_id) && (loop_item.type === request_type))) !== undefined);
+}
+
 export function validate_pathname(request_pathname: (string[] | undefined | null)): boolean {
     const pathname_type = Array.isArray(request_pathname);
     const pathname_full = (pathname_type && (request_pathname.join("/").match(/[^\w\/]/) === null));

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { get_error, get_session } from "@/utilities/util_cache";
-import { validate_id, validate_json, validate_string, validate_type } from "@/utilities/util_validate";
+import { validate_asset, validate_id, validate_json, validate_string, validate_type } from "@/utilities/util_validate";
 import { DatabaseUserRole, set_markup } from "@/utilities/util_database";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
@@ -42,6 +42,10 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return;
     }
     if (!(await validate_id(request_id))) {
+        response.status(400).json(get_error(undefined));
+        return;
+    }
+    if (!(await validate_asset(request_id, request_type))) {
         response.status(400).json(get_error(undefined));
         return;
     }
