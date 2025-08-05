@@ -34,6 +34,17 @@ const PageHeader: NextPageLayout = () => {
 		header_element.setAttribute("dropdown-active", (dropdown_active ? "false" : "true"));
 	};
 
+	/* unused and reserved pages
+				<Link className={styles.item} href="/calculator">
+					<FontAwesomeIcon icon={faSquareRootVariable} width="14" height="14"/>
+					<span>Calculator</span>
+				</Link>
+				<Link className={styles.item} href="/loadout">
+					<FontAwesomeIcon icon={faShuffle} width="14" height="14"/>
+					<span>Loadout</span>
+				</Link>
+	*/
+
 	return (
 		<header className={`${styles.header} ${font_inter.className}`}>
 			<Link className={`${styles.icon} ${font_bungee.className}`} href="/" onClick={(event: any) => silent_scroll(event, "/", "#cover", page_router)}>
@@ -44,14 +55,6 @@ const PageHeader: NextPageLayout = () => {
 				<Link className={styles.item} href="/weapons">
 					<FontAwesomeIcon icon={faMagnifyingGlass} width="14" height="14"/>
 					<span>Catalog</span>
-				</Link>
-				<Link className={styles.item} href="/calculator">
-					<FontAwesomeIcon icon={faSquareRootVariable} width="14" height="14"/>
-					<span>Calculator</span>
-				</Link>
-				<Link className={styles.item} href="/loadout">
-					<FontAwesomeIcon icon={faShuffle} width="14" height="14"/>
-					<span>Loadout</span>
 				</Link>
 				<Link className={styles.item} href={data_links.link_private}>
 					<FontAwesomeIcon icon={faLock} width="14" height="14"/>
