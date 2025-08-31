@@ -92,6 +92,26 @@ interface DatabaseMarkup extends Omit<InferSchemaType<typeof DatabaseMarkupSchem
     updated: string // Date type omitted after json serialize
 }
 
+const DatabaseValueUpdateSchema = new Backend.server_database.Schema({
+    date:  {type: Date,   required: true},
+    value: {type: Number, required: true}
+});
+
+const DatabaseValueHistorySchema = new Backend.server_database.Schema({
+    id:       {type: String, required: true},
+    updated:  {type: Date,   required: true},
+    updates: [{type: DatabaseValueUpdateSchema}]
+});
+
+const DatabaseValueHistoryModel = Backend.server_database.models.values || Backend.server_database.model("values", DatabaseValueHistorySchema);
+interface DatabaseValueUpdate extends Omit<InferSchemaType<typeof DatabaseValueUpdateSchema>, "date"> {
+    date: string // Date type omitted after json serialize
+};
+interface DatabaseValueHistory extends Omit<InferSchemaType<typeof DatabaseValueHistorySchema>, "updated"|"updates"> {
+    updated: string,
+    updates: DatabaseValueUpdate[]
+};
+
 export async function set_user(discord_user: DiscordUser): Promise<DatabaseUser | null> {
     for (let attempt = 0; attempt < 5; attempt++) try {
         return get_serialized(await DatabaseUserModel.findOneAndUpdate({
@@ -162,24 +182,71 @@ export async function set_markup(markup_id: string, markup_type: AssetType, mark
         new:    true,
         projection: {_id: 0, __v: 0}
     }));
-    await remove_cache("markups");
+    await remove_cache(`markups/${markup_id}`);
     return markup_data;
-}
-
-export async function get_markup_all(): Promise<DatabaseMarkup[]> {
-    return get_serialized(await DatabaseMarkupModel.find({}, undefined, {projection: {_id: 0, __v: 0}}));
-}
-
-export async function get_markup_all_cached(): Promise<APIContent<DatabaseMarkup[]>> {
-    return await get_cache(`markups`, undefined, async () => {
-        return await get_markup_all();
-    });
 }
 
 export async function get_markup(markup_id: string): Promise<DatabaseMarkup | null> {
     return get_serialized(await DatabaseMarkupModel.findOne({
         id: markup_id
     }, undefined, {projection: {_id: 0, __v: 0}}));
+}
+
+export async function get_markup_cached(markup_id: string): Promise<APIContent<DatabaseMarkup | null>> {
+    return await get_cache(`markups/${markup_id}`, undefined, async () => {
+        return await get_markup(markup_id);
+    });
+}
+
+export async function set_value(value_id: string, value_new: number, value_overwrite: boolean): Promise<DatabaseValueHistory> {
+    const value_update = {
+        date: new Date(),
+        value: value_new
+    } as unknown as DatabaseValueUpdate;
+    const history_old = get_serialized(await DatabaseValueHistoryModel.findOne({
+        id: value_id
+    })) as (DatabaseValueHistory | null);
+    const history_new = get_serialized(await DatabaseValueHistoryModel.findOneAndUpdate({
+        id: value_id
+    }, {$set: {
+        id:      value_id,
+        updated: Date.now(),
+        updates: set_value_overwrite(history_old, value_update, value_overwrite)
+    }}, {
+        upsert: true,
+        new:    true,
+        projection: {_id: 0, __v: 0, "updates._id": 0}
+    })) as DatabaseValueHistory;
+    await remove_cache(`values/${value_id}`);
+    return history_new;
+}
+
+function set_value_overwrite(old_history: (DatabaseValueHistory | null), new_update: DatabaseValueUpdate, new_overwrite: boolean): DatabaseValueUpdate[] {
+    // no existing values
+    if (old_history === null) return [new_update];
+    // there's existing values
+    const old_newest   = old_history.updates.at(-1) as DatabaseValueUpdate;
+    const old_updated  = new Date(old_newest.date).getTime();
+    const new_updated  = new Date(new_update.date).getTime();
+    // check if a day has passed since last update
+    const old_outdated = ((new_updated - old_updated) >= 864E5);
+    if ((!new_overwrite) || old_outdated) return old_history.updates.concat(new_update);
+    return old_history.updates.slice(0, -1).concat({
+        date:  old_newest.date,
+        value: new_update.value
+    } as unknown as DatabaseValueUpdate);
+}
+
+export async function get_value(value_id: string): Promise<DatabaseValueHistory | null> {
+    return get_serialized(await DatabaseValueHistoryModel.findOne({
+        id: value_id
+    }, undefined, {projection: {_id: 0, __v: 0, "updates._id": 0}}));
+}
+
+export async function get_value_cached(value_id: string): Promise<APIContent<DatabaseValueHistory | null>> {
+    return await get_cache(`values/${value_id}`, undefined, async () => {
+        return await get_value(value_id);
+    });
 }
 
 function get_serialized<DatabaseContent>(database_content: DatabaseContent): DatabaseContent {

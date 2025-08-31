@@ -3,9 +3,11 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { CategoryScale, Chart, Filler, Legend, LinearScale, LineController, LineElement, PointElement, Title, Tooltip } from "chart.js";
+import { Line } from "react-chartjs-2";
 import { NextPageLayout } from "../_app";
 import { validate_string } from "@/utilities/util_validate";
-import { get_assets, get_assets_cached, get_markup_all_cached } from "@/utilities/util_database";
+import { get_assets, get_assets_cached, get_markup_cached } from "@/utilities/util_database";
 import { Asset, AssetGroup, AssetType, CurrencyConverter, CurrencyType, get_categories } from "@/utilities/util_asset";
 import styles from "@/styles/pages/CatalogItem.module.css";
 import ObjectMarkdownViewer from "@/components/object_viewer_markdown";
@@ -48,6 +50,18 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
     const asset_wraps           = props.page_wraps.slice(0, Math.min(props.page_wraps.length, 4));
     const asset_wraps_more      = Math.max((props.page_wraps.length - 4), 0);
 
+    Chart.register([
+        LineController,
+        LineElement,
+        PointElement,
+        CategoryScale,
+        LinearScale,
+        Title,
+        Legend,
+        Tooltip,
+        Filler
+    ]);
+
     useEffect(() => {
         set_text(props.page_markup);
     }, [props.page_markup])
@@ -88,6 +102,43 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
             set_edit({...page_edit, status: CatalogItemEditStatus.FAILED});
         }
     }
+
+    const chart_values_data = {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            fill:            true,
+            borderWidth:     3,
+            borderColor:     "rgb(255, 99, 132)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            tension:         0.4
+        }, {
+            label: "# of Votes Prog",
+            data: [12, 19, 3, 5, 2, 30],
+            fill:            true,
+            borderWidth:     3,
+            borderColor:     "rgb(54, 162, 235)",
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            tension:         0.4
+        }]
+    };
+    const chart_values_options = {
+        plugins: {
+            title: {
+                display: true,
+                text:    "Season Scores",
+                color:   "white",
+                font:    {size: 16, weight: 800}
+            },
+            legend: {
+                labels: {color: "white", font: {size: 12, weight: 800}}
+            }
+        }, scales: {
+            x: {ticks: {color: "white", font: {size: 12, weight: 800}}}                  as any,
+            y: {ticks: {color: "white", font: {size: 12, weight: 800}}, suggestedMin: 0} as any
+        }
+    };
 
     return (
         <div className={styles.layout}>
@@ -191,6 +242,11 @@ const CatalogItem: NextPageLayout<CatalogItemProps> = (props) => {
                                     <span>{props.page_asset.name}</span>
                                 </span>
                             </div>
+                        </div>
+                    </section>
+                    <section className={styles.graph}>
+                        <div>
+                            <Line data={chart_values_data} options={chart_values_options}/>
                         </div>
                     </section>
                     <section className={styles.document}>
@@ -298,7 +354,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         "."
     ].join("");
     // find markup
-    const page_markup = (await get_markup_all_cached()).result.find(markup_data => (markup_data.id === page_id));
+    const page_markup = (await get_markup_cached(page_id)).result;
     // find prices
     const page_prices = page_asset.price.map(price_data => {
         if (price_data.currency === CurrencyType.QUEST) return price_data.source;
