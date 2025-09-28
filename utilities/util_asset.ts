@@ -110,7 +110,7 @@ export enum CurrencyType {
     CANDY       = "candy",
     GINGERBREAD = "gingerbread",
     SNOWFLAKE   = "snowflake",
-    COOKIE      = "cookie",
+    DALGONA     = "dalgona",
     ROBUX       = "robux",
     QUEST       = "quest"
 }
@@ -127,7 +127,7 @@ export const CurrencyTypeOrder = {
     [CurrencyType.CANDY]:       7,
     [CurrencyType.GINGERBREAD]: 8,
     [CurrencyType.SNOWFLAKE]:   9,
-    [CurrencyType.COOKIE]:      10,
+    [CurrencyType.DALGONA]:     10,
     [CurrencyType.ROBUX]:       11,
     [CurrencyType.QUEST]:       12
 } as {[key in CurrencyType]: number};

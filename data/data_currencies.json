@@ -66,9 +66,9 @@
         "color": "#88c9f9"
     },
     {
-        "id": "cookie",
-        "name": "Cookie",
-        "icon": "/images/currencies/cookie.png",
+        "id": "dalgona",
+        "name": "Dalgona",
+        "icon": "/images/currencies/dalgona.png",
         "color": "#ecad47"
     },
     {
