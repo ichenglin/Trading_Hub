@@ -110,6 +110,7 @@ export enum CurrencyType {
     CANDY       = "candy",
     GINGERBREAD = "gingerbread",
     SNOWFLAKE   = "snowflake",
+    COOKIE      = "cookie",
     ROBUX       = "robux",
     QUEST       = "quest"
 }
@@ -126,8 +127,9 @@ export const CurrencyTypeOrder = {
     [CurrencyType.CANDY]:       7,
     [CurrencyType.GINGERBREAD]: 8,
     [CurrencyType.SNOWFLAKE]:   9,
-    [CurrencyType.ROBUX]:       10,
-    [CurrencyType.QUEST]:       11
+    [CurrencyType.COOKIE]:      10,
+    [CurrencyType.ROBUX]:       11,
+    [CurrencyType.QUEST]:       12
 } as {[key in CurrencyType]: number};
 
 export type CurrencyConverter = {[id: string]: Currency};

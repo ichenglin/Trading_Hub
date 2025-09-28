@@ -66,6 +66,12 @@
         "color": "#88c9f9"
     },
     {
+        "id": "cookie",
+        "name": "Cookie",
+        "icon": "/images/currencies/cookie.png",
+        "color": "#ecad47"
+    },
+    {
         "id": "quest",
         "name": "Quest",
         "icon": "/images/currencies/quest.png",
