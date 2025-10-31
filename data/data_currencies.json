@@ -72,6 +72,12 @@
         "color": "#ecad47"
     },
     {
+        "id": "bat",
+        "name": "Bat Token",
+        "icon": "/images/currencies/bat.png",
+        "color": "#e72828"
+    },
+    {
         "id": "quest",
         "name": "Quest",
         "icon": "/images/currencies/quest.png",
