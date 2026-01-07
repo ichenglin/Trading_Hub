@@ -78,6 +78,12 @@
         "color": "#e72828"
     },
     {
+        "id": "snow",
+        "name": "Snow Token",
+        "icon": "/images/currencies/snow.png",
+        "color": "#47f5ff"
+    },
+    {
         "id": "quest",
         "name": "Quest",
         "icon": "/images/currencies/quest.png",
