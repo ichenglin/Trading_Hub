@@ -37,16 +37,14 @@ Restore database:
 docker compose exec -T mongodb mongorestore --drop --db flagwars /tmp/dump/flagwars
 ```
 
-Recreate Next.js so build-time data is refreshed:
-```bash
-docker compose up -d --force-recreate nextjs
-```
-
-## Redis Cache
-
-Clear all Redis data:
+Clear all Redis cache:
 ```bash
 docker compose exec -T redis redis-cli FLUSHALL
+```
+
+Recreate Next.js so build-time data is refreshed:
+```bash
+docker compose up -d --force-recreate website
 ```
 
 ## Optional: Clean Slate
