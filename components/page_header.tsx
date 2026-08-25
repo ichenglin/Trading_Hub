@@ -2,13 +2,11 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
+import localFont from "next/font/local";
 import type { NextPageLayout } from "../pages/_app";
 import styles from "@/styles/components/Header.module.css";
 import silent_scroll from "@/utilities/util_scroll";
 import icon_image from "@/public/android-chrome-192x192.png";
-
-// fonts
-import { Inter, Bungee } from "next/font/google";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,8 +17,8 @@ import { context_auth } from "@/contexts/context_page";
 // data
 import data_links from "@/data/data_links.json";
 
-const font_bungee = Bungee({subsets: ["latin"], weight: "400"});
-const font_inter  = Inter({subsets: ["latin"]});
+const font_bungee = localFont({src: "../public/fonts/Bungee-Regular.ttf"});
+const font_inter  = localFont({src: "../public/fonts/Inter-VariableFont_opsz,wght.ttf"});
 
 const PageHeader: NextPageLayout = () => {
 

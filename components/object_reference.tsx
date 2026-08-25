@@ -1,15 +1,13 @@
 import Link from "next/link";
+import localFont from "next/font/local";
 import type { NextPageLayout } from "../pages/_app";
 import styles from "@/styles/components/Reference.module.css";
-
-// fonts
-import { JetBrains_Mono } from "next/font/google";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-const font_jetbrains = JetBrains_Mono({subsets: ["latin"]});
+const font_jetbrains = localFont({src: "../public/fonts/JetBrainsMono-VariableFont_wght.ttf"});
 
 const ObjectReference: NextPageLayout<{message: string, href: string}> = (props) => {
 	return (

@@ -1,22 +1,20 @@
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import localFont from "next/font/local";
 import type { NextPageLayout } from "./_app";
 import styles from "@/styles/pages/About.module.css";
 import ObjectDivider, { ObjectDividerType } from "@/components/object_divider";
 import ObjectReference from "@/components/object_reference";
 import banner_image from "@/public/images/banner.png";
 
-// fonts
-import { Dosis, JetBrains_Mono } from "next/font/google";
-
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
-const font_jetbrains = JetBrains_Mono({subsets: ["latin"]});
-const font_dosis     = Dosis         ({subsets: ["latin"]});
+const font_jetbrains = localFont({src: "../public/fonts/JetBrainsMono-VariableFont_wght.ttf"});
+const font_dosis     = localFont({src: "../public/fonts/Dosis-VariableFont_wght.ttf"});
 
 const About: NextPageLayout = () => {
 

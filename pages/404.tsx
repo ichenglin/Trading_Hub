@@ -1,14 +1,12 @@
 import { GetStaticProps } from "next";
 import Image from "next/image";
+import localFont from "next/font/local";
 import type { NextPageLayout } from "./_app";
 import ObjectReference from "@/components/object_reference";
 import styles from "@/styles/pages/Error.module.css";
 import icon_image from "@/public/android-chrome-512x512.png";
 
-// fonts
-import { Dosis } from "next/font/google";
-
-const font_dosis = Dosis({subsets: ["latin"]});
+const font_dosis = localFont({src: "../public/fonts/Dosis-VariableFont_wght.ttf"});
 
 const Error404: NextPageLayout = () => {
 	return (

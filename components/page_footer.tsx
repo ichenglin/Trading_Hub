@@ -1,16 +1,14 @@
 import Link from "next/link";
+import localFont from "next/font/local";
 import type { NextPageLayout } from "../pages/_app";
 import styles from "@/styles/components/Footer.module.css";
-
-// fonts
-import { Inter } from "next/font/google";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGamepad, faMapLocationDot, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
-const font_inter = Inter({subsets: ["latin"]});
+const font_inter = localFont({src: "../public/fonts/Inter-VariableFont_opsz,wght.ttf"});
 
 const PageFooter: NextPageLayout = () => {
 

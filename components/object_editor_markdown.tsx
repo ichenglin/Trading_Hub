@@ -1,13 +1,11 @@
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import { Dispatch } from "react";
-import type { NextPageLayout } from "../pages/_app";
 import dynamic from "next/dynamic";
+import localFont from "next/font/local";
+import type { NextPageLayout } from "../pages/_app";
 
-// fonts
-import { Ubuntu_Mono } from "next/font/google";
-
-const font_mono = Ubuntu_Mono({subsets: ["latin"], weight: ["400"]});
+const font_mono = localFont({src: "../public/fonts/UbuntuMono-Regular.ttf"});
 const MDEditor  = dynamic(() => import("@uiw/react-md-editor"), {ssr: false});
 
 const CUSTOM_STYLE = `.w-md-editor {\n${[

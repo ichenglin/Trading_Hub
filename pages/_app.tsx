@@ -3,13 +3,11 @@ import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import localFont from "next/font/local";
 import PageHeader from "@/components/page_header";
 import PageFooter from "@/components/page_footer";
 import PageAlert from "@/components/page_alert";
 import ContextPage from "@/contexts/context_page";
-
-// fonts
-import { Inter } from "next/font/google";
 
 // icons
 import { config } from "@fortawesome/fontawesome-svg-core"
@@ -18,7 +16,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css"
 // data
 import data_links from "@/data/data_links.json";
 
-const font_inter = Inter({subsets: ["latin"]});
+const font_inter = localFont({src: "../public/fonts/Inter-VariableFont_opsz,wght.ttf"});
 
 // fontawesome implementation
 config.autoAddCss = false;
