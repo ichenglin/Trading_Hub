@@ -4,6 +4,9 @@
 /assets
 /backup
 .env
+/secrets/*
+!/secrets/.gitkeep
+storage/
 
 # dependencies
 /node_modules

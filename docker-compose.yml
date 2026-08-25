@@ -1,0 +1,78 @@
+services:
+  website:
+    build:
+      context: .
+    container_name: tradinghub-website
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+      - web
+    environment:
+      REDIS_CACHE_LIFESPAN_FILE: /run/secrets/redis_cache_lifespan
+      REDIS_SESSION_LIFESPAN_FILE: /run/secrets/redis_session_lifespan
+      AUTH_CLIENT_ID_FILE: /run/secrets/auth_client_id
+      AUTH_CLIENT_SECRET_FILE: /run/secrets/auth_client_secret
+      AUTH_REDIRECT_FILE: /run/secrets/auth_redirect
+    secrets:
+      - redis_cache_lifespan
+      - redis_session_lifespan
+      - auth_client_id
+      - auth_client_secret
+      - auth_redirect
+    volumes:
+      - ./assets:/app/assets:ro
+
+  redis:
+    image: redis:5.0.7
+    container_name: tradinghub-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - internal
+    volumes:
+      - ./storage/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  mongodb:
+    image: mongo:8.0.17
+    container_name: tradinghub-mongodb
+    restart: unless-stopped
+    networks:
+      - internal
+    volumes:
+      - ./storage/mongodb:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet mongodb://localhost:27017/admin --eval \"db.adminCommand({ ping: 1 }).ok\" | grep 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+secrets:
+  redis_cache_lifespan:
+    file: ./secrets/redis_cache_lifespan
+  redis_session_lifespan:
+    file: ./secrets/redis_session_lifespan
+  auth_client_id:
+    file: ./secrets/auth_client_id
+  auth_client_secret:
+    file: ./secrets/auth_client_secret
+  auth_redirect:
+    file: ./secrets/auth_redirect
+
+networks:
+  internal:
+    internal: true
+  web:
